@@ -17,6 +17,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drive extends SubsystemBase {
@@ -41,12 +43,6 @@ public class Drive extends SubsystemBase {
         }
     }
 
-    // TODO: Make this reflect speed properly
-    public void setSpeeds(ChassisSpeeds speeds) {
-        drive.startTeleopDrive();
-        drive.setTeleOpMovementVectors(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, true);
-    }
-
     public void setPose(Pose pose) {
         drive.setPose(pose);
     }
@@ -59,20 +55,8 @@ public class Drive extends SubsystemBase {
         drive.setTeleOpMovementVectors(xSupplier.getAsDouble(), ySupplier.getAsDouble(), rotationSupplier.getAsDouble(), false);
     }
 
-    public Pose getPedroPose() {
+    public Pose getPose() {
         return drive.getPose();
-    }
-
-    public Pose2d getPose() {
-        return new Pose2d(new Translation2d(drive.getPose().getX(), drive.getPose().getY()), new Rotation2d(drive.getPose().getHeading()));
-    }
-
-    public Rotation2d getRotation() {
-        return getPose().getRotation();
-    }
-
-    public double getMaxVelocity() {
-        return 1.0;
     }
 
     public PathBuilder getPathBuilder() {
@@ -84,7 +68,16 @@ public class Drive extends SubsystemBase {
     }
 
     public boolean isFinished() {
-        return drive.atParametricEnd();
+        return drive.isBusy();
+    }
+
+    public static Command followPath(Drive drive, Pose startPose, PathChain path) {
+        return Commands.runOnce(() -> drive.setPose(startPose), drive)
+                .andThen(Commands.runOnce(() -> drive.followPath(path), drive));
+    }
+
+    public static Command followPath(Drive drive, PathChain path) {
+        return Commands.runOnce(() -> drive.followPath(path), drive).andThen(Commands.waitUntil(drive::isFinished));
     }
 
 }
