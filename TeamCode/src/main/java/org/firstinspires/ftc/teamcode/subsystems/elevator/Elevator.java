@@ -49,7 +49,6 @@ public class Elevator extends SubsystemBase {
             telemetry.addData("Elevator Voltage", topMotor.getVoltage());
             telemetry.addData("Elevator Current", topMotor.getCurrent());
 
-
             // If setpoint on dashboard changes, update the setpoint
             if (kSetpoint != ElevatorConstants.setpoint) {
                 kSetpoint = ElevatorConstants.setpoint;

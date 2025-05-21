@@ -62,7 +62,7 @@ public class DriveCommands {
                             // Calculate angular speed
                             double omega =
                                     angleController.calculate(
-                                            drive.getPedroPose().getHeading(), rotationSupplier.getAsDouble());
+                                            drive.getPose().getHeading(), rotationSupplier.getAsDouble());
 
                             drive.drive(
                                     xSupplier,
