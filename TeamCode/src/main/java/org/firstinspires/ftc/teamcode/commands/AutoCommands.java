@@ -20,4 +20,12 @@ public class AutoCommands {
                 .addPose(new Pose(50, 10, Math.toRadians(90)))
                 .build();
     }
+
+    public static Command redAuto(Drive drive, Pivot pivot) {
+        return new AutoBuilder(drive, new Pose(10, 0, 0))
+                .forward(10)
+                .strafeLeft(10)
+                .addCommmand(Pivot.setPosition(pivot, () -> 0.0))
+                .build();
+    }
 }
