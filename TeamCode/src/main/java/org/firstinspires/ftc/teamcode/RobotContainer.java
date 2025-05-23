@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.commands.AutoCommands;
+import org.firstinspires.ftc.teamcode.commands.DriveCommands;
 import org.firstinspires.ftc.teamcode.lib.wpilib.CommandGamepad;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.Pivot;
@@ -35,12 +36,12 @@ public class RobotContainer {
     }
 
     public void setDefaultCommands(){
-//        drive.setDefaultCommand(
-//                DriveCommands.joystickDrive(
-//                        drive,
-//                        () -> -driverController.getLeftY(),
-//                        () -> -driverController.getLeftX(),
-//                        () -> -driverController.getRightX()));
+        drive.setDefaultCommand(
+                DriveCommands.joystickDrive(
+                        drive,
+                        () -> -driverController.getLeftY(),
+                        () -> -driverController.getLeftX(),
+                        () -> -driverController.getRightX()));
     }
 
     public void configureButtonBindings() {

@@ -16,6 +16,8 @@
 
             <goBILDA5202SeriesMotor name="FR" port="1"/>
             <goBILDA5202SeriesMotor name="BR" port="0"/>
+            <goBILDA5202SeriesMotor name="pivot" port="3"/>
+
 
 
 
