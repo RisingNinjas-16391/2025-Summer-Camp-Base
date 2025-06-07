@@ -47,12 +47,30 @@ public class RobotContainer {
                         () -> -driverController.getLeftX(),
                         () -> -driverController.getRightX()));
 
-        intake.setDefaultCommand(Intake.setPower(intake, () -> driverController.getLeftTrigger() - driverController.getRightTrigger()));
+        intake.setDefaultCommand(
+                Commands.run(() -> {
+                    double intakePower = driverController.getLeftTrigger() - driverController.getRightTrigger();
+                    intake.setPower(intakePower);
+
+                    // If triggers are pressed (i.e., intakePower ≠ 0), run shooter
+                    if (Math.abs(intakePower) > 0.05) {
+                        shooter.setPower(-0.35);
+                    } else {
+                        shooter.setPower(0.0);
+                    }
+                }, intake)  // declare intake as the requirement
+        );
     }
 
     public void configureButtonBindings() {
-        driverController.a().whileTrue(Intake.setPower(shooter, () -> 0.35)).onFalse(Intake.setPower(shooter, () -> 0.0));
+        driverController.a().whileTrue(Intake.setPower(shooter, () -> 0.75)).onFalse(Intake.setPower(shooter, () -> 0.0));
         driverController.b().whileTrue(Intake.setPower(shooter, () -> -0.35)).onFalse(Intake.setPower(shooter, () -> 0.0));
+
+        // Right bumper overrides intake while held (full power),
+        // and releases control cleanly back to the default command
+        driverController.rightBumper()
+                .whileTrue(Intake.setPower(intake, () -> -1))
+                .onFalse(Commands.runOnce(() -> intake.setPower(0.0)));
     }
 
     public Command getAutoCommand(int chooser) {
