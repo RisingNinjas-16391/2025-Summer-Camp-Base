@@ -27,7 +27,8 @@ public class ServoIntake extends SubsystemBase {
     @Override
     public void periodic() {
         try {
-            setPower(ServoIntakeConstants.setpoint);
+            setLeftPower(ServoIntakeConstants.setpoint);
+            setRightPower(ServoIntakeConstants.setpoint);
         } catch (Exception ignored) {
 
             telemetry.addData("Left Servo Voltage", leftServo.getVoltage());
@@ -36,15 +37,18 @@ public class ServoIntake extends SubsystemBase {
         }
     }
 
-    private void setPower(double power) {
-        leftServo.set(power);
-        rightServo.set(power);
+    private void setLeftPower(double leftPower) {
+        leftServo.set(leftPower);
     }
-    public static Command setLeftServoPower(ServoIntake leftServo, DoubleSupplier power) {
-        return Commands.run(() -> leftServo.setPower(power.getAsDouble()), leftServo);
+
+    private void setRightPower(double rightPower) {
+        rightServo.set(rightPower);
     }
-    public static Command setRightServoPower(ServoIntake rightServo, DoubleSupplier power) {
-        return Commands.run(() -> rightServo.setPower(power.getAsDouble()), rightServo);
+    public static Command setLeftServoPower(ServoIntake leftServo, DoubleSupplier leftPower) {
+        return Commands.run(() -> leftServo.setLeftPower(leftPower.getAsDouble()), leftServo);
+    }
+    public static Command setRightServoPower(ServoIntake rightServo, DoubleSupplier rightPower) {
+        return Commands.run(() -> rightServo.setRightPower(rightPower.getAsDouble()), rightServo);
     }
 }
 

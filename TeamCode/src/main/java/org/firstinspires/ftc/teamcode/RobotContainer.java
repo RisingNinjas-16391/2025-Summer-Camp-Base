@@ -29,10 +29,10 @@ public class RobotContainer {
 
     public RobotContainer(HardwareMap hwMap, Telemetry telemetry, Gamepad gamepad1, Gamepad gamepad2, int autoNum) {
         drive = new Drive(hwMap, telemetry);
-        pivot = new Pivot(hwMap, telemetry);
+        //pivot = new Pivot(hwMap, telemetry);
         leftServo = new ServoIntake(hwMap, telemetry);
         rightServo = new ServoIntake(hwMap, telemetry);
-        //intake = new Intake(hwMap, telemetry, "intake");
+        intake = new Intake(hwMap, telemetry, "intake");
         //shooter = new Intake(hwMap, telemetry, "shooter");
 
         driverController = new CommandGamepad(gamepad1);
@@ -62,10 +62,10 @@ public class RobotContainer {
         //driverController.a().whileTrue(Intake.setPower(shooter, () -> 0.35)).onFalse(Intake.setPower(shooter, () -> 0.0));
         //driverController.b().whileTrue(Intake.setPower(shooter, () -> -0.35)).onFalse(Intake.setPower(shooter, () -> 0.0));
         //driverController.y().whileTrue(Pivot.setPosition(pivot, () -> 0.35)).onFalse(Pivot.setPosition(pivot, () -> 0.0));
-        driverController.x().onTrue(Pivot.setPosition(pivot, () -> -1));
-        driverController.y().onTrue(Pivot.setPosition(pivot, () -> 0.25));
-        driverController.a().whileTrue(ServoIntake.setLeftServoPower(leftServo, () -> 0.5));
-        driverController.b().whileTrue(ServoIntake.setLeftServoPower(rightServo, () -> -0.5));
+        //driverController.x().onTrue(Pivot.setPosition(pivot, () -> -1));
+        //driverController.y().onTrue(Pivot.setPosition(pivot, () -> 0.25));
+        driverController.a().onTrue(ServoIntake.setLeftServoPower(leftServo, () -> 0.5)).onFalse(ServoIntake.setLeftServoPower(leftServo, () -> -0.5));
+        driverController.a().onTrue(ServoIntake.setRightServoPower(rightServo, () -> -0.5)).onFalse(ServoIntake.setRightServoPower(rightServo, () -> 0.5));
 
     }
 

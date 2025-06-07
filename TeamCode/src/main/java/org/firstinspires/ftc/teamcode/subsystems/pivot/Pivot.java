@@ -75,4 +75,5 @@ public class Pivot extends SubsystemBase {
     public static Command setPosition(Pivot pivot, DoubleSupplier position) {
         return Commands.run(() -> pivot.setPosition(position.getAsDouble()), pivot);
     }
+
 }
