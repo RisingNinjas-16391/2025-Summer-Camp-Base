@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.commands.AutoCommands;
 import org.firstinspires.ftc.teamcode.commands.DriveCommands;
 import org.firstinspires.ftc.teamcode.lib.wpilib.CommandGamepad;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drive;
-import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
+//import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.servo_intake.ServoIntake;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.Pivot;
 
@@ -20,18 +20,20 @@ public class RobotContainer {
     private final Drive drive;
     private final Pivot pivot;
 
-    private final ServoIntake servoIntake;
-    private final Intake intake;
-    private final Intake shooter;
+    private final ServoIntake leftServo;
+    private final ServoIntake rightServo;
+    //private final Intake intake;
+    //private final Intake shooter;
 
     private final CommandGamepad driverController;
 
     public RobotContainer(HardwareMap hwMap, Telemetry telemetry, Gamepad gamepad1, Gamepad gamepad2, int autoNum) {
         drive = new Drive(hwMap, telemetry);
         pivot = new Pivot(hwMap, telemetry);
-        servoIntake = new ServoIntake(hwMap, telemetry);
-        intake = new Intake(hwMap, telemetry, "intake");
-        shooter = new Intake(hwMap, telemetry, "shooter");
+        leftServo = new ServoIntake(hwMap, telemetry);
+        rightServo = new ServoIntake(hwMap, telemetry);
+        //intake = new Intake(hwMap, telemetry, "intake");
+        //shooter = new Intake(hwMap, telemetry, "shooter");
 
         driverController = new CommandGamepad(gamepad1);
 
@@ -51,7 +53,8 @@ public class RobotContainer {
                         () -> -driverController.getLeftX(),
                         () -> -driverController.getRightX()));
 
-        //intake.setDefaultCommand(Intake.setPower(intake, () -> driverController.getLeftTrigger() - driverController.getRightTrigger()));
+        leftServo.setDefaultCommand(ServoIntake.setLeftServoPower(leftServo, driverController::getLeftTrigger));
+        rightServo.setDefaultCommand(ServoIntake.setRightServoPower(rightServo, driverController::getRightTrigger));
 
     }
 
