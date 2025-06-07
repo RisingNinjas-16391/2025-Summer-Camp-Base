@@ -53,8 +53,8 @@ public class RobotContainer {
                         () -> -driverController.getLeftX(),
                         () -> -driverController.getRightX()));
 
-        leftServo.setDefaultCommand(ServoIntake.setLeftServoPower(leftServo, driverController::getLeftTrigger));
-        rightServo.setDefaultCommand(ServoIntake.setRightServoPower(rightServo, driverController::getRightTrigger));
+        //leftServo.setDefaultCommand(ServoIntake.setLeftServoPower(leftServo, driverController::getLeftTrigger));
+        //rightServo.setDefaultCommand(ServoIntake.setRightServoPower(rightServo, driverController::getRightTrigger));
 
     }
 
@@ -64,7 +64,8 @@ public class RobotContainer {
         //driverController.y().whileTrue(Pivot.setPosition(pivot, () -> 0.35)).onFalse(Pivot.setPosition(pivot, () -> 0.0));
         driverController.x().onTrue(Pivot.setPosition(pivot, () -> -1));
         driverController.y().onTrue(Pivot.setPosition(pivot, () -> 0.25));
-
+        driverController.a().whileTrue(ServoIntake.setLeftServoPower(leftServo, () -> 0.5));
+        driverController.b().whileTrue(ServoIntake.setLeftServoPower(rightServo, () -> -0.5));
 
     }
 
