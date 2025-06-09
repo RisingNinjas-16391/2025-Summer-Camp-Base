@@ -1,6 +1,10 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.pedropathing.localization.Pose;
+import com.pedropathing.pathgen.BezierLine;
+import com.pedropathing.pathgen.Path;
+import com.pedropathing.pathgen.PathBuilder;
 
 import org.ejml.dense.row.FMatrixComponent;
 import org.firstinspires.ftc.teamcode.lib.controller.SquIDController;
@@ -8,6 +12,7 @@ import org.firstinspires.ftc.teamcode.subsystems.drive.Drive;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -31,10 +36,14 @@ public class DriveCommands {
             DoubleSupplier xSupplier,
             DoubleSupplier ySupplier,
             DoubleSupplier omegaSupplier) {
+        SlewRateLimiter xLimiter = new SlewRateLimiter(2, -10, 0);
+        SlewRateLimiter yLimiter = new SlewRateLimiter(2, -10, 0);
+        SlewRateLimiter rotLimiter = new SlewRateLimiter(2, -10, 0);
+
         return Commands.runOnce(drive::startTeleopDrive, drive).andThen(Commands.run(() -> drive.drive(
-                xSupplier,
-                ySupplier,
-                omegaSupplier)));
+                () -> Math.signum(xSupplier.getAsDouble()) * xLimiter.calculate(Math.abs(xSupplier.getAsDouble())),
+                () -> Math.signum(ySupplier.getAsDouble()) * yLimiter.calculate(Math.abs(ySupplier.getAsDouble())),
+                () -> Math.signum(omegaSupplier.getAsDouble()) * rotLimiter.calculate(Math.abs(omegaSupplier.getAsDouble())))));
     }
 
     /**
@@ -70,5 +79,41 @@ public class DriveCommands {
                                     () -> omega);
                         },
                         drive));
+    }
+
+    public static Command driveToPose(Drive drive, Supplier<Pose> pose) {
+        return Drive.followPath(
+                drive,
+                () -> new PathBuilder()
+                        .addPath(new Path(new BezierLine(drive.getPose(), pose.get())))
+                        .setLinearHeadingInterpolation(drive.getPose().getHeading(), pose.get().getHeading())
+                        .build());
+    }
+
+    public static Command driveToPose(Drive drive, Supplier<Pose> pose, Command command, DoubleSupplier commandActivationPoint) {
+        return Drive.followPath(
+                drive,
+                () -> new PathBuilder()
+                        .addPath(new Path(new BezierLine(drive.getPose(), pose.get())))
+                        .setLinearHeadingInterpolation(drive.getPose().getHeading(), pose.get().getHeading())
+                        .addParametricCallback(commandActivationPoint.getAsDouble(), command::schedule)
+                        .build());
+    }
+
+    public static Command setPose(Drive drive, Supplier<Pose> pose) {
+        return Commands.runOnce(() -> drive.setPose(pose.get()), drive);
+    }
+
+    public static Command forward(Drive drive, DoubleSupplier distance) {
+        return Drive.followPath(
+                drive,
+                () -> new PathBuilder()
+                        .addPath(new Path(new BezierLine(drive.getPose(), new Pose(drive.getPose().getX() + Math.cos(drive.getPose().getHeading()) * distance.getAsDouble(), drive.getPose().getY(), drive.getPose().getHeading() + Math.sin(drive.getPose().getHeading()) * distance.getAsDouble()))))
+                        .setLinearHeadingInterpolation(drive.getPose().getHeading(), drive.getPose().getHeading())
+                        .build());
+    }
+
+    public static double signSquare(double num) {
+        return num * num * Math.signum(num);
     }
 }

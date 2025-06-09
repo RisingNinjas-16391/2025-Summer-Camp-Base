@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.commands.auto.PoseStorage;
 import org.firstinspires.ftc.teamcode.subsystems.drive.localizer.LimelightLocalizerOTOS;
 
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -30,6 +31,7 @@ public class Drive extends SubsystemBase {
 
         drive.setPose(PoseStorage.currentPose);
 //        drive.initialize(new LimelightLocalizerOTOS(hwMap));
+
         this.telemetry = telemetry;
     }
 
@@ -80,4 +82,7 @@ public class Drive extends SubsystemBase {
         return Commands.runOnce(() -> drive.followPath(path), drive).andThen(Commands.waitUntil(drive::isFinished));
     }
 
+    public static Command followPath(Drive drive, Supplier<PathChain> path) {
+        return Commands.runOnce(() -> drive.followPath(path.get()), drive).andThen(Commands.waitUntil(drive::isFinished));
+    }
 }

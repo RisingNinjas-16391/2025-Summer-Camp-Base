@@ -20,17 +20,25 @@ public class ServoIntake extends SubsystemBase {
     private final CRServo leftServo;
     private final CRServo rightServo;
 
+    private double kSetpoint = ServoIntakeConstants.setpoint;
+
     public ServoIntake(HardwareMap hwMap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
         leftServo = new CRServo(hwMap, "leftIntake");
         rightServo = new CRServo(hwMap, "rightIntake");
+
+        leftServo.setInverted(true);
+        rightServo.setInverted(false);
     }
 
     @Override
     public void periodic() {
         try {
-            setPower(ServoIntakeConstants.setpoint);
+            if (kSetpoint != ServoIntakeConstants.setpoint) {
+                kSetpoint = ServoIntakeConstants.setpoint;
+                setPower(kSetpoint);
+            }
         } catch (Exception ignored) {
 
         }
@@ -39,5 +47,9 @@ public class ServoIntake extends SubsystemBase {
     private void setPower(double power) {
         leftServo.set(power);
         rightServo.set(power);
+    }
+
+    public static Command setPower(ServoIntake servoIntake, DoubleSupplier power) {
+        return Commands.run(() -> servoIntake.setPower(power.getAsDouble()), servoIntake);
     }
 }
