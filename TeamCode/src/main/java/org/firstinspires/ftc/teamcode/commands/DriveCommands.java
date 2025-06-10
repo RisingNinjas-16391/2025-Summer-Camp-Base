@@ -113,6 +113,42 @@ public class DriveCommands {
                         .build());
     }
 
+    public static Command backward(Drive drive, DoubleSupplier distance) {
+        return Drive.followPath(
+                drive,
+                () -> new PathBuilder()
+                        .addPath(new Path(new BezierLine(drive.getPose(), new Pose(drive.getPose().getX() - Math.cos(drive.getPose().getHeading()) * distance.getAsDouble(), drive.getPose().getY(), drive.getPose().getHeading() - Math.sin(drive.getPose().getHeading()) * distance.getAsDouble()))))
+                        .setLinearHeadingInterpolation(drive.getPose().getHeading(), drive.getPose().getHeading())
+                        .build());
+    }
+
+    public static Command strafeLeft(Drive drive, DoubleSupplier distance) {
+        return Drive.followPath(
+                drive,
+                () -> new PathBuilder()
+                        .addPath(new Path(new BezierLine(drive.getPose(), new Pose(drive.getPose().getX() - Math.sin(drive.getPose().getHeading()) * distance.getAsDouble(), drive.getPose().getY(), drive.getPose().getHeading() - Math.cos(drive.getPose().getHeading()) * distance.getAsDouble()))))
+                        .setLinearHeadingInterpolation(drive.getPose().getHeading(), drive.getPose().getHeading())
+                        .build());
+    }
+
+    public static Command strafeRight(Drive drive, DoubleSupplier distance) {
+        return Drive.followPath(
+                drive,
+                () -> new PathBuilder()
+                        .addPath(new Path(new BezierLine(drive.getPose(), new Pose(drive.getPose().getX() + Math.sin(drive.getPose().getHeading()) * distance.getAsDouble(), drive.getPose().getY(), drive.getPose().getHeading() + Math.cos(drive.getPose().getHeading()) * distance.getAsDouble()))))
+                        .setLinearHeadingInterpolation(drive.getPose().getHeading(), drive.getPose().getHeading())
+                        .build());
+    }
+
+    public static Command turn(Drive drive, DoubleSupplier angle) {
+        return Drive.followPath(
+                drive,
+                () -> new PathBuilder()
+//                        .addPath(new Path(new BezierLine(drive.getPose(), drive.getPose())))
+                        .setLinearHeadingInterpolation(drive.getPose().getHeading(), drive.getPose().getHeading() + angle.getAsDouble())
+                        .build());
+    }
+
     public static double signSquare(double num) {
         return num * num * Math.signum(num);
     }
