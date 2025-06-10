@@ -108,7 +108,12 @@ public class DriveCommands {
         return Drive.followPath(
                 drive,
                 () -> new PathBuilder()
-                        .addPath(new Path(new BezierLine(drive.getPose(), new Pose(drive.getPose().getX() + Math.cos(drive.getPose().getHeading()) * distance.getAsDouble(), drive.getPose().getY(), drive.getPose().getHeading() + Math.sin(drive.getPose().getHeading()) * distance.getAsDouble()))))
+                        .addPath(new Path(new BezierLine(
+                                drive.getPose(),
+                                new Pose(
+                                        drive.getPose().getX() + Math.cos(drive.getPose().getHeading()) * distance.getAsDouble(),
+                                        drive.getPose().getY() + Math.sin(drive.getPose().getHeading()) * distance.getAsDouble(),
+                                        drive.getPose().getHeading()))))
                         .setLinearHeadingInterpolation(drive.getPose().getHeading(), drive.getPose().getHeading())
                         .build());
     }
@@ -117,7 +122,12 @@ public class DriveCommands {
         return Drive.followPath(
                 drive,
                 () -> new PathBuilder()
-                        .addPath(new Path(new BezierLine(drive.getPose(), new Pose(drive.getPose().getX() - Math.cos(drive.getPose().getHeading()) * distance.getAsDouble(), drive.getPose().getY(), drive.getPose().getHeading() - Math.sin(drive.getPose().getHeading()) * distance.getAsDouble()))))
+                        .addPath(new Path(new BezierLine(
+                                drive.getPose(),
+                                new Pose(
+                                        drive.getPose().getX() - Math.cos(drive.getPose().getHeading()) * distance.getAsDouble(),
+                                        drive.getPose().getY() - Math.sin(drive.getPose().getHeading()) * distance.getAsDouble(),
+                                        drive.getPose().getHeading()))))
                         .setLinearHeadingInterpolation(drive.getPose().getHeading(), drive.getPose().getHeading())
                         .build());
     }
@@ -126,7 +136,12 @@ public class DriveCommands {
         return Drive.followPath(
                 drive,
                 () -> new PathBuilder()
-                        .addPath(new Path(new BezierLine(drive.getPose(), new Pose(drive.getPose().getX() - Math.sin(drive.getPose().getHeading()) * distance.getAsDouble(), drive.getPose().getY(), drive.getPose().getHeading() - Math.cos(drive.getPose().getHeading()) * distance.getAsDouble()))))
+                        .addPath(new Path(new BezierLine(
+                                drive.getPose(),
+                                new Pose(
+                                        drive.getPose().getX() - Math.sin(drive.getPose().getHeading()) * distance.getAsDouble(),
+                                        drive.getPose().getY() + Math.cos(drive.getPose().getHeading()) * distance.getAsDouble(),
+                                        drive.getPose().getHeading()))))
                         .setLinearHeadingInterpolation(drive.getPose().getHeading(), drive.getPose().getHeading())
                         .build());
     }
@@ -135,10 +150,16 @@ public class DriveCommands {
         return Drive.followPath(
                 drive,
                 () -> new PathBuilder()
-                        .addPath(new Path(new BezierLine(drive.getPose(), new Pose(drive.getPose().getX() + Math.sin(drive.getPose().getHeading()) * distance.getAsDouble(), drive.getPose().getY(), drive.getPose().getHeading() + Math.cos(drive.getPose().getHeading()) * distance.getAsDouble()))))
+                        .addPath(new Path(new BezierLine(
+                                drive.getPose(),
+                                new Pose(
+                                        drive.getPose().getX() + Math.sin(drive.getPose().getHeading()) * distance.getAsDouble(),
+                                        drive.getPose().getY() - Math.cos(drive.getPose().getHeading()) * distance.getAsDouble(),
+                                        drive.getPose().getHeading()))))
                         .setLinearHeadingInterpolation(drive.getPose().getHeading(), drive.getPose().getHeading())
                         .build());
     }
+
 
     public static Command turn(Drive drive, DoubleSupplier angle) {
         return Drive.followPath(
