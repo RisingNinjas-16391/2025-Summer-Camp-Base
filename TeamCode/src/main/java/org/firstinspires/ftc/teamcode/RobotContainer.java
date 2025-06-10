@@ -60,7 +60,7 @@ public class RobotContainer {
         driverController.a().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.LOW));
         driverController.b().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.MIDDLE));
         driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH));
-        
+        driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.CLIMB));
     }
 
     public Command getAutoCommand(int chooser) {
