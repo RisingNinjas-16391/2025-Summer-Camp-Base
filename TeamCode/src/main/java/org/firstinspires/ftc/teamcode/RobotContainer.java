@@ -11,10 +11,8 @@ import org.firstinspires.ftc.teamcode.subsystems.Subsystems;
 import org.firstinspires.ftc.teamcode.subsystems.claw.Claw;
 import org.firstinspires.ftc.teamcode.subsystems.claw.ClawConstants;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drive;
-import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.Pivot;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.PivotConstants;
-import org.firstinspires.ftc.teamcode.subsystems.servo_intake.ServoIntake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -22,11 +20,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 public class RobotContainer {
     private final Drive drive;
     private final Pivot pivot;
-//    private final Claw claw;
-    private final ServoIntake servoIntake;
-
-//    private final Intake intake;
-//    private final Intake shooter;
+    private final Claw claw;
 
     private final Subsystems subsystems;
 
@@ -35,12 +29,9 @@ public class RobotContainer {
     public RobotContainer(HardwareMap hwMap, Telemetry telemetry, Gamepad gamepad1, Gamepad gamepad2, int autoNum) {
         drive = new Drive(hwMap, telemetry);
         pivot = new Pivot(hwMap, telemetry);
-//        claw = new Claw(hwMap, telemetry);
-        servoIntake = new ServoIntake(hwMap, telemetry);
-//        intake = new Intake(hwMap, telemetry, "intake");
-//        shooter = new Intake(hwMap, telemetry, "shooter");
+        claw = new Claw(hwMap, telemetry);
 
-        subsystems = new Subsystems(drive, pivot, servoIntake);
+        subsystems = new Subsystems(drive, pivot, claw);
 
         driverController = new CommandGamepad(gamepad1);
 
@@ -60,21 +51,15 @@ public class RobotContainer {
                         () -> DriveCommands.signSquare(-driverController.getLeftX()),
                         () -> DriveCommands.signSquare(-driverController.getRightX()))
         );
-
-        servoIntake.setDefaultCommand(ServoIntake.setPower(servoIntake, () -> driverController.getRightTrigger() - driverController.getLeftTrigger()));
-//        intake.setDefaultCommand(Intake.setPower(intake, () -> driverController.getLeftTrigger() - driverController.getRightTrigger()));
     }
 
     public void configureButtonBindings() {
-//        driverController.a().whileTrue(Intake.setPower(shooter, () -> 0.35)).onFalse(Intake.setPower(shooter, () -> 0.0));
-//        driverController.b().whileTrue(Intake.setPower(shooter, () -> -0.35)).onFalse(Intake.setPower(shooter, () -> 0.0));
-
         driverController.a().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.LOW));
         driverController.b().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.MIDDLE));
         driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH));
 
-//        driverController.leftTrigger().onTrue(Claw.setPosition(claw, () -> ClawConstants.OPEN));
-//        driverController.rightTrigger().onTrue(Claw.setPosition(claw, () -> ClawConstants.CLOSE));
+        driverController.leftTrigger().onTrue(Claw.setPosition(claw, () -> ClawConstants.OPEN));
+        driverController.rightTrigger().onTrue(Claw.setPosition(claw, () -> ClawConstants.CLOSE));
     }
 
     public Command getAutoCommand(int chooser) {
