@@ -70,7 +70,7 @@ public class Drive extends SubsystemBase {
     }
 
     public boolean isFinished() {
-        return drive.isBusy();
+        return !drive.isBusy();
     }
 
     public static Command followPath(Drive drive, Pose startPose, PathChain path) {
