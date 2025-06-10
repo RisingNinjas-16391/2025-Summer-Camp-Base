@@ -165,8 +165,8 @@ public class DriveCommands {
         return Drive.followPath(
                 drive,
                 () -> new PathBuilder()
-//                        .addPath(new Path(new BezierLine(drive.getPose(), drive.getPose())))
-                        .setLinearHeadingInterpolation(drive.getPose().getHeading(), drive.getPose().getHeading() + angle.getAsDouble())
+                        .addPath(new Path(new BezierLine(drive.getPose(), drive.getPose())))
+                        .setLinearHeadingInterpolation(drive.getPose().getHeading(), drive.getPose().getHeading() + Math.toRadians(angle.getAsDouble()))
                         .build());
     }
 
