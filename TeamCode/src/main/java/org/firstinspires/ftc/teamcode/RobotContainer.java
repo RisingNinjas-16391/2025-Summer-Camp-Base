@@ -57,6 +57,7 @@ public class RobotContainer {
         driverController.a().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.LOW));
         driverController.b().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.MIDDLE));
         driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH));
+        driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.CLIMB));
 
         driverController.leftTrigger().onTrue(Claw.setPosition(claw, () -> ClawConstants.OPEN));
         driverController.rightTrigger().onTrue(Claw.setPosition(claw, () -> ClawConstants.CLOSE));
