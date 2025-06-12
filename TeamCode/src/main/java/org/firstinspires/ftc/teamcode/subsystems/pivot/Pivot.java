@@ -72,7 +72,18 @@ public class Pivot extends SubsystemBase {
         desiredPosition = position;
     }
 
+    public double getPosition() {
+        return currentPosition;
+    }
+
+    public boolean isFinished() {
+        return Math.abs(currentPosition - desiredPosition) < 0.05;
+    }
     public static Command setPosition(Pivot pivot, DoubleSupplier position) {
-        return Commands.run(() -> pivot.setPosition(position.getAsDouble()), pivot);
+        return Commands.run(() -> pivot.setPosition(position.getAsDouble()), pivot).until(pivot::isFinished);
+    }
+
+    public static Command score(Pivot pivot) {
+        return Commands.runOnce(() -> pivot.setPosition(pivot.getPosition() - 0.1));
     }
 }
