@@ -61,6 +61,10 @@ public class Drive extends SubsystemBase {
         return drive.getPose();
     }
 
+    public Pose getDesiredPose() {
+        return drive.getClosestPose();
+    }
+
     public PathBuilder getPathBuilder() {
         return drive.pathBuilder();
     }
@@ -71,6 +75,10 @@ public class Drive extends SubsystemBase {
 
     public boolean isFinished() {
         return !drive.isBusy();
+    }
+
+    public boolean headingIsFinished() {
+        return drive.getHeadingError() < 0.001; // Adjust this threshold as needed
     }
 
     public static Command followPath(Drive drive, Pose startPose, PathChain path) {
