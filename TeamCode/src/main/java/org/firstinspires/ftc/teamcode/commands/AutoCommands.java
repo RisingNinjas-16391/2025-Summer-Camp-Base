@@ -13,15 +13,16 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 @Config
 public class AutoCommands {
-    public static double AUTO_FORWARD_DISTANCE = 10.0;
+    public static double AUTO_FORWARD_DISTANCE = 40.0;
+    public static double AUTO_STRAFE_DISTANCE = 10.0;
 
     public static Command blueAuto(Subsystems subsystems) {
         return Commands.sequence(
-                DriveCommands.forward(subsystems.drive(), () -> 10.0),
-                DriveCommands.strafeLeft(subsystems.drive(), () -> 10.0),
-                DriveCommands.strafeLeft(subsystems.drive(), () -> 10.0),
-                DriveCommands.strafeLeft(subsystems.drive(), () -> 10.0),
-                DriveCommands.strafeLeft(subsystems.drive(), () -> 10.0)
+                DriveCommands.forward(subsystems.drive(), () -> AUTO_FORWARD_DISTANCE),
+                DriveCommands.strafeLeft(subsystems.drive(), () -> AUTO_STRAFE_DISTANCE),
+                DriveCommands.strafeLeft(subsystems.drive(), () -> AUTO_STRAFE_DISTANCE),
+                DriveCommands.strafeLeft(subsystems.drive(), () -> AUTO_STRAFE_DISTANCE),
+                DriveCommands.strafeLeft(subsystems.drive(), () -> AUTO_STRAFE_DISTANCE)
         );
     }
 

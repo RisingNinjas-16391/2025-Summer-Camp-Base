@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.subsystems.drive;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.localization.localizers.OTOSLocalizer;
+import com.pedropathing.pathgen.BezierPoint;
+import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.PathBuilder;
 import com.pedropathing.pathgen.PathChain;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -33,6 +35,8 @@ public class Drive extends SubsystemBase {
 //        drive.initialize(new LimelightLocalizerOTOS(hwMap));
 
         this.telemetry = telemetry;
+
+        drive.followPath(drive.pathBuilder().addPath(new Path(new BezierPoint(new Pose(0, 0, 0)))).build());
     }
 
     @Override
