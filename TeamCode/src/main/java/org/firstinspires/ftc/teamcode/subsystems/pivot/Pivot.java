@@ -84,6 +84,6 @@ public class Pivot extends SubsystemBase {
     }
 
     public static Command score(Pivot pivot) {
-        return Commands.runOnce(() -> pivot.setPosition(pivot.getPosition() - 0.1));
+        return Commands.runOnce(() -> pivot.setPosition(pivot.getPosition() - 0.1)).andThen(Commands.waitUntil(pivot::isFinished));
     }
 }
