@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 @Config
 public class AutoCommands {
-
     public static Command blueAuto(Subsystems subsystems) {
         return Commands.sequence(
                 DriveCommands.driveToPose(

@@ -7,6 +7,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.commands.AutoCommands;
 import org.firstinspires.ftc.teamcode.commands.DriveCommands;
 import org.firstinspires.ftc.teamcode.lib.wpilib.CommandGamepad;
+import org.firstinspires.ftc.teamcode.opmodes.OpModeConstants;
 import org.firstinspires.ftc.teamcode.subsystems.Subsystems;
 import org.firstinspires.ftc.teamcode.subsystems.claw.Claw;
 import org.firstinspires.ftc.teamcode.subsystems.claw.ClawConstants;
@@ -26,7 +27,7 @@ public class RobotContainer {
 
     private final CommandGamepad driverController;
 
-    public RobotContainer(HardwareMap hwMap, Telemetry telemetry, Gamepad gamepad1, Gamepad gamepad2, int autoNum) {
+    public RobotContainer(HardwareMap hwMap, Telemetry telemetry, Gamepad gamepad1, Gamepad gamepad2, OpModeConstants autoNum) {
         drive = new Drive(hwMap, telemetry);
         pivot = new Pivot(hwMap, telemetry);
         claw = new Claw(hwMap, telemetry);
@@ -35,7 +36,7 @@ public class RobotContainer {
 
         driverController = new CommandGamepad(gamepad1);
 
-        if (autoNum == 0) {
+        if (autoNum == OpModeConstants.TELEOP) {
             setDefaultCommands();
             configureButtonBindings();
         } else {
@@ -65,13 +66,11 @@ public class RobotContainer {
         driverController.rightTrigger().onTrue(Claw.setPosition(claw, () -> ClawConstants.CLOSE));
     }
 
-    public Command getAutoCommand(int chooser) {
-        switch (chooser) {
-            case 1:
-                return AutoCommands.blueAuto(subsystems);
-            case 2:
-                return AutoCommands.redAuto(subsystems);
-        }
-        return Commands.none();
+    public Command getAutoCommand(OpModeConstants auto) {
+        return switch (auto) {
+            case BLUE_AUTO -> AutoCommands.blueAuto(subsystems);
+            case RED_AUTO -> AutoCommands.redAuto(subsystems);
+            default -> Commands.none();
+        };
     }
 }

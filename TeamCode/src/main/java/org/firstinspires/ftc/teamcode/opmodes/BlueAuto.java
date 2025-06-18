@@ -8,14 +8,14 @@ import org.firstinspires.ftc.teamcode.RobotContainer;
 import org.firstinspires.ftc.teamcode.lib.ftclib.opmode.CommandOpMode;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "BlueAuto", group = "Auto")
-public class Auto extends CommandOpMode {
+public class BlueAuto extends CommandOpMode {
     private Telemetry robotTelemetry;
     private RobotContainer robotContainer;
 
     @Override
     public void robotInit() {
         robotTelemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        robotContainer = new RobotContainer(hardwareMap, telemetry, gamepad1, gamepad2, 1); //Uses heavily modified untested hardware
+        robotContainer = new RobotContainer(hardwareMap, telemetry, gamepad1, gamepad2, OpModeConstants.BLUE_AUTO); //Uses heavily modified untested hardware
     }
 
     @Override
@@ -27,7 +27,6 @@ public class Auto extends CommandOpMode {
 
     @Override
     public void enabledInit() {
-        robotContainer.getAutoCommand(1).schedule();
+        robotContainer.getAutoCommand(OpModeConstants.BLUE_AUTO).schedule();
     }
-
 }
