@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.lib.ftclib.opmode.CommandOpMode;
 
 import edu.wpi.first.wpilibj.Timer;
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "BLUETeleOp", group = "TeleOp")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOp", group = "TeleOp")
 public class TeleOp extends CommandOpMode {
     private Telemetry robotTelemetry;
     private Timer timer = new Timer();
