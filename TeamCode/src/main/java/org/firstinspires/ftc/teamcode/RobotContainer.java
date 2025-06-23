@@ -70,6 +70,8 @@ public class RobotContainer {
 
         driverController.leftTrigger().onTrue(Claw.setPosition(claw, () -> ClawConstants.OPEN));
         driverController.rightTrigger().onTrue(Claw.setPosition(claw, () -> ClawConstants.CLOSE));
+
+        driverController.start().onTrue(Pivot.resetPosition(pivot));
     }
 
     public Command getAutoCommand(OpModeConstants auto) {
