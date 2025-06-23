@@ -8,6 +8,7 @@ import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.PathBuilder;
 
 import org.ejml.dense.row.FMatrixComponent;
+import org.firstinspires.ftc.teamcode.commands.auto.PoseStorage;
 import org.firstinspires.ftc.teamcode.lib.controller.SquIDController;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drive;
 
@@ -94,13 +95,13 @@ public class DriveCommands {
     }
 
     public static Command driveToPose(Drive drive, Supplier<Pose> pose, Command command, DoubleSupplier commandActivationPoint) {
-        return Drive.followPath(
-                drive,
-                () -> new PathBuilder()
-                        .addPath(new Path(new BezierLine(drive.getPose(), pose.get())))
-                        .setLinearHeadingInterpolation(drive.getPose().getHeading(), pose.get().getHeading())
-                        .addParametricCallback(commandActivationPoint.getAsDouble(), command::schedule)
-                        .build());
+        return Commands.parallel(
+                driveToPose(drive, pose),
+                Commands.sequence(
+                        Commands.waitUntil(() -> drive.getPathT() > commandActivationPoint.getAsDouble()),
+                        command
+                )
+        );
     }
 
     public static Command setPose(Drive drive, Supplier<Pose> pose) {
@@ -150,6 +151,32 @@ public class DriveCommands {
                         .addPath(new Path(new BezierPoint(drive.getDesiredPose())))
                         .setConstantHeadingInterpolation(drive.getDesiredPose().getHeading() + Math.toRadians(angle.getAsDouble()))
                         .build()).until(drive::headingIsFinished).andThen(Commands.waitSeconds(0.5));
+    }
+
+    public static Command forward(Drive drive, double distance) {
+        return forward(drive, () -> distance);
+    }
+
+    public static Command backward(Drive drive, double distance) {
+        return backward(drive, () -> distance);
+    }
+
+    public static Command strafeLeft(Drive drive, double distance) {
+        return strafeLeft(drive, () -> distance);
+    }
+
+    public static Command strafeRight(Drive drive, double distance) {
+        return strafeRight(drive, () -> distance);
+    }
+
+    public static Command turn(Drive drive, double angle) {
+        return turn(drive, () -> angle);
+    }
+
+    public static Command setPoseStorage(Drive drive, Supplier<Pose> pose) {
+        return Commands.runOnce(() -> {
+            PoseStorage.currentPose = pose.get();
+        }, drive);
     }
 
     public static double signSquare(double num) {

@@ -31,10 +31,9 @@ public class Drive extends SubsystemBase {
     public Drive(HardwareMap hwMap, Telemetry telemetry) {
         drive = new Follower(hwMap, DriveConstants.FConstants.class, DriveConstants.LConstants.class);
 
-        drive.setPose(PoseStorage.currentPose);
-//        drive.initialize(new LimelightLocalizerOTOS(hwMap));
+//        drive.setPose(PoseStorage.currentPose);
 
-        drive.followPath(new Path(new BezierPoint(new Pose(0, 0, 0))));
+        drive.followPath(new Path(new BezierPoint(new Pose())));
         this.telemetry = telemetry;
     }
 
@@ -43,7 +42,8 @@ public class Drive extends SubsystemBase {
         try {
             drive.update();
             drive.drawOnDashBoard();
-            drive.telemetryDebug(telemetry);
+//            telemetry.addData("Drive T", drive.getCurrentTValue());
+//            drive.telemetryDebug(telemetry);
         } catch (Exception ignored) {
         }
     }
@@ -68,6 +68,9 @@ public class Drive extends SubsystemBase {
         return drive.getClosestPose();
     }
 
+    public double getPathT() {
+        return drive.getCurrentTValue();
+    }
     public PathBuilder getPathBuilder() {
         return drive.pathBuilder();
     }

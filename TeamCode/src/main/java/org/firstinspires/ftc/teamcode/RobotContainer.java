@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.pedropathing.localization.Pose;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.commands.AutoCommands;
 import org.firstinspires.ftc.teamcode.commands.DriveCommands;
+import org.firstinspires.ftc.teamcode.commands.auto.PoseStorage;
 import org.firstinspires.ftc.teamcode.lib.wpilib.CommandGamepad;
 import org.firstinspires.ftc.teamcode.opmodes.OpModeConstants;
 import org.firstinspires.ftc.teamcode.subsystems.Subsystems;
@@ -46,11 +48,15 @@ public class RobotContainer {
 
     public void setDefaultCommands(){
         drive.setDefaultCommand(
-                DriveCommands.joystickDrive(
-                        drive,
-                        () -> DriveCommands.signSquare(-driverController.getLeftY()),
-                        () -> DriveCommands.signSquare(-driverController.getLeftX()),
-                        () -> DriveCommands.signSquare(-driverController.getRightX()))
+                Commands.sequence(
+                        DriveCommands.setPose(drive, () -> PoseStorage.currentPose),
+                        DriveCommands.joystickDrive(
+                                drive,
+                                () -> DriveCommands.signSquare(-driverController.getLeftY()),
+                                () -> DriveCommands.signSquare(-driverController.getLeftX()),
+                                () -> DriveCommands.signSquare(-driverController.getRightX()))
+                )
+
         );
     }
 
@@ -72,5 +78,9 @@ public class RobotContainer {
             case RED_AUTO -> AutoCommands.redAuto(subsystems);
             default -> Commands.none();
         };
+    }
+
+    public Pose getDrivePose() {
+        return drive.getPose();
     }
 }

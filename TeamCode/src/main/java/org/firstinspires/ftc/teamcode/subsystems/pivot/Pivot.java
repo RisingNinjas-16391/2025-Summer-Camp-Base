@@ -44,10 +44,10 @@ public class Pivot extends SubsystemBase {
         try {
             currentPosition = pivotMotor.getCurrentPosition() * PivotConstants.ticksToRotations + PivotConstants.initialPosition;
 
-            telemetry.addLine("Pivot");
-            telemetry.addData("Pivot Position", currentPosition);
-            telemetry.addData("Pivot Voltage", pivotMotor.getVoltage());
-            telemetry.addData("Pivot Current", pivotMotor.getCurrent());
+//            telemetry.addLine("Pivot");
+//            telemetry.addData("Pivot Position", currentPosition);
+//            telemetry.addData("Pivot Voltage", pivotMotor.getVoltage());
+//            telemetry.addData("Pivot Current", pivotMotor.getCurrent());
 
             // If setpoint on dashboard changes, update the setpoint
             if (kSetpoint != PivotConstants.setpoint) {
@@ -62,7 +62,7 @@ public class Pivot extends SubsystemBase {
     }
 
     private void calculateVoltage(double position) {
-        telemetry.addData("Pivot Desired Position", position);
+//        telemetry.addData("Pivot Desired Position", position);
 
         double output = controller.calculate(PivotConstants.kP, position, currentPosition) + PivotConstants.kG * Math.cos(Units.rotationsToRadians(currentPosition));
         pivotMotor.set(output);

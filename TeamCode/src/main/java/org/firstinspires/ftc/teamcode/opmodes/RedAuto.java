@@ -5,9 +5,11 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.RobotContainer;
+import org.firstinspires.ftc.teamcode.commands.auto.PoseStorage;
 import org.firstinspires.ftc.teamcode.lib.ftclib.opmode.CommandOpMode;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "RedAuto", group = "Auto")
 public class RedAuto extends CommandOpMode {
@@ -36,5 +38,12 @@ public class RedAuto extends CommandOpMode {
     @Override
     public void enabledInit() {
         robotContainer.getAutoCommand(OpModeConstants.RED_AUTO).schedule();
+    }
+
+    @Override
+    public void disabledInit() {
+        CommandScheduler.getInstance().reset();
+
+        PoseStorage.currentPose = robotContainer.getDrivePose();
     }
 }
