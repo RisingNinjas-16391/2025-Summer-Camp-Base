@@ -17,5 +17,5 @@ public class PivotConstants {
     public static double MIDDLE = 0.12;
     public static double HIGH = 0.18;
     public static double CLIMB = 0.35;
-    public static double HILOW = -0.04;
+    public static double HILOW = -0.05;
 }

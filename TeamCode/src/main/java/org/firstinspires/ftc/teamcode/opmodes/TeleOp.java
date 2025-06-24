@@ -19,7 +19,7 @@ public class TeleOp extends CommandOpMode {
     @Override
     public void robotInit() {
         robotTelemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        new RobotContainer(hardwareMap, robotTelemetry, gamepad1, gamepad2, OpModeConstants.TELEOP); //Uses heavily modified untested hardware
+        new RobotContainer(hardwareMap, robotTelemetry, gamepad1, gamepad2, 0); //Uses heavily modified untested hardware
         timer.start();
     }
 
