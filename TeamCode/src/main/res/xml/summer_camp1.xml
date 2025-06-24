@@ -4,18 +4,15 @@
         <LynxModule name="Control Hub" port="173">
             <goBILDA5202SeriesMotor name="BR" port="0"/>-->
             <goBILDA5202SeriesMotor name="FR" port="1"/>-->
-<!--            <goBILDA5202SeriesMotor name="intake" port="2"/>&ndash;&gt;-->
+            <goBILDA5202SeriesMotor name="intake" port="2"/>-->
             <goBILDA5202SeriesMotor name="pivot" port="2"/>-->
 
-
             <ContinuousRotationServo name="leftIntake" port="0"/>
-            <ContinuousRotationServo name="rightIntake" port="1"/>
+            <ContinuousRotationServo name="rightIntake" port="2"/>
 
             <goBILDAPinpoint name="pinpoint" port="0" bus="0"/>
-
         </LynxModule>
         <LynxModule name="Expansion Hub 1" port="1">
-
             <goBILDA5202SeriesMotor name="FL" port="1"/>
             <goBILDA5202SeriesMotor name="BL" port="0"/>
 

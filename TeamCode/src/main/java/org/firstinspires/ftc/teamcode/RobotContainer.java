@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.subsystems.drive.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.Pivot;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.PivotConstants;
 import org.firstinspires.ftc.teamcode.subsystems.servo_intake.ServoIntake;
+import org.firstinspires.ftc.teamcode.opmodes.AutoConstants;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -40,7 +41,7 @@ public class RobotContainer {
             setDefaultCommands();
             configureButtonBindings();
         } else {
-            getAutoCommand(autoNum);
+            getAutoCommand(AutoConstants.values()[autoNum - 1]);
         }
     }
 
@@ -63,13 +64,11 @@ public class RobotContainer {
         driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.CLIMB));
     }
 
-    public Command getAutoCommand(int chooser) {
-        switch (chooser) {
-            case 1:
-                return AutoCommands.blueAuto(subsystems);
-            case 2:
-                return AutoCommands.redAuto(subsystems);
-        }
-        return Commands.none();
+    public Command getAutoCommand(AutoConstants chooser) {
+        return switch (chooser) {
+            case BLUE -> AutoCommands.blueAuto(subsystems);
+            case RED -> AutoCommands.redAuto(subsystems);
+            default -> Commands.none();
+        };
     }
 }

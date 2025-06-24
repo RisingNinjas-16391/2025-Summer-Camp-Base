@@ -42,6 +42,9 @@ public class ServoIntake extends SubsystemBase {
         } catch (Exception ignored) {
 
         }
+
+        telemetry.addData("Servo Power", kSetpoint);
+        telemetry.update();
     }
 
     private void setPower(double power) {
