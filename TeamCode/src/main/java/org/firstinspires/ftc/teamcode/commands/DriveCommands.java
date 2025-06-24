@@ -121,6 +121,21 @@ public class DriveCommands {
                         .build());
     }
 
+    public static Command forward(Drive drive, DoubleSupplier distance, Command command, DoubleSupplier commandActivationPoint) {
+        return Drive.followPath(
+                drive,
+                () -> new PathBuilder()
+                        .addPath(new Path(new BezierLine(
+                                drive.getDesiredPose(),
+                                new Pose(
+                                        drive.getDesiredPose().getX() + Math.cos(drive.getPose().getHeading()) * distance.getAsDouble(),
+                                        drive.getDesiredPose().getY() + Math.sin(drive.getPose().getHeading()) * distance.getAsDouble(),
+                                        drive.getDesiredPose().getHeading()))))
+                        .setLinearHeadingInterpolation(drive.getPose().getHeading(), drive.getPose().getHeading())
+                        .addParametricCallback(commandActivationPoint.getAsDouble(), command::schedule)
+                        .build());
+    }
+
     public static Command backward(Drive drive, DoubleSupplier distance) {
         return forward(drive, () -> -distance.getAsDouble());
     }
