@@ -10,9 +10,13 @@ import org.firstinspires.ftc.teamcode.lib.wpilib.CommandGamepad;
 import org.firstinspires.ftc.teamcode.subsystems.Subsystems;
 import org.firstinspires.ftc.teamcode.subsystems.claw.Claw;
 import org.firstinspires.ftc.teamcode.subsystems.claw.ClawConstants;
+import org.firstinspires.ftc.teamcode.subsystems.climber_pivot.ClimberPivot;
+import org.firstinspires.ftc.teamcode.subsystems.climber_pivot.ClimberPivotConstants;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.Pivot;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.PivotConstants;
+import org.firstinspires.ftc.teamcode.subsystems.wrist.Wrist;
+import org.firstinspires.ftc.teamcode.subsystems.wrist.WristConstants;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -21,6 +25,8 @@ public class RobotContainer {
     private final Drive drive;
     private final Pivot pivot;
     private final Claw claw;
+    private final Wrist wrist;
+    private final ClimberPivot climb;
 
     private final Subsystems subsystems;
 
@@ -30,8 +36,10 @@ public class RobotContainer {
         drive = new Drive(hwMap, telemetry);
         pivot = new Pivot(hwMap, telemetry);
         claw = new Claw(hwMap, telemetry);
+        wrist = new Wrist(hwMap, telemetry);
+        climb = new ClimberPivot(hwMap, telemetry);
 
-        subsystems = new Subsystems(drive, pivot, claw);
+        subsystems = new Subsystems(drive, pivot, claw, wrist, climb);
 
         driverController = new CommandGamepad(gamepad1);
 
@@ -54,10 +62,19 @@ public class RobotContainer {
     }
 
     public void configureButtonBindings() {
-        driverController.a().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.FEED));
-        driverController.b().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.LOW));
-        driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH));
-        driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.CLIMB));
+        driverController.a().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.FEED)
+                .alongWith(Wrist.setPosition(wrist, () -> WristConstants.FLIPPED))
+                .alongWith(ClimberPivot.setPosition(climb, () -> ClimberPivotConstants.TRAVEL)));
+        driverController.b().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.LOW)
+                .alongWith(Wrist.setPosition(wrist, () -> WristConstants.UPRIGHT))
+                .alongWith(ClimberPivot.setPosition(climb, () -> ClimberPivotConstants.TRAVEL)));
+        driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH)
+                .alongWith(Wrist.setPosition(wrist, () -> WristConstants.UPRIGHT))
+                .alongWith(ClimberPivot.setPosition(climb, () -> ClimberPivotConstants.TRAVEL)));
+        driverController.x().onTrue(
+                Commands.parallel(
+                        Pivot.setPosition(pivot, () -> PivotConstants.FEED),
+                        ClimberPivot.setPosition(climb, () -> ClimberPivotConstants.CLIMB)));
 
         driverController.rightBumper().onTrue(Pivot.score(pivot).andThen(Claw.setPosition(claw, () -> ClawConstants.OPEN)));
 

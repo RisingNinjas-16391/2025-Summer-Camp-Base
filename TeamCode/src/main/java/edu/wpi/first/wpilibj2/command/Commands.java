@@ -10,6 +10,7 @@ import edu.wpi.first.units.measure.Time;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 /**
@@ -127,6 +128,10 @@ public final class Commands {
    */
   public static Command waitSeconds(double seconds) {
     return new WaitCommand(seconds);
+  }
+
+  public static Command waitSeconds(DoubleSupplier seconds) {
+    return Commands.defer(() -> new WaitCommand(seconds.getAsDouble()), Set.of());
   }
 
   /**

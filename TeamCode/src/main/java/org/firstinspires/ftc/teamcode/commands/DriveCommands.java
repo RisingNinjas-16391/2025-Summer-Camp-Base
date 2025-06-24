@@ -44,9 +44,9 @@ public class DriveCommands {
         SlewRateLimiter rotLimiter = new SlewRateLimiter(2, -10, 0);
 
         return Commands.runOnce(drive::startTeleopDrive, drive).andThen(Commands.run(() -> drive.drive(
-                () -> Math.signum(xSupplier.getAsDouble()) * xLimiter.calculate(Math.abs(xSupplier.getAsDouble())),
-                () -> Math.signum(ySupplier.getAsDouble()) * yLimiter.calculate(Math.abs(ySupplier.getAsDouble())),
-                () -> Math.signum(omegaSupplier.getAsDouble()) * rotLimiter.calculate(Math.abs(omegaSupplier.getAsDouble())))));
+                () -> 0.6 * Math.signum(xSupplier.getAsDouble()) * xLimiter.calculate(Math.abs(xSupplier.getAsDouble())),
+                () -> 0.6 * Math.signum(ySupplier.getAsDouble()) * yLimiter.calculate(Math.abs(ySupplier.getAsDouble())),
+                () -> 0.6 * Math.signum(omegaSupplier.getAsDouble()) * rotLimiter.calculate(Math.abs(omegaSupplier.getAsDouble())))));
     }
 
     /**
