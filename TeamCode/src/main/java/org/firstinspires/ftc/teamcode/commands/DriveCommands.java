@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.commands;
 import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierLine;
+import com.pedropathing.pathgen.BezierPoint;
 import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.PathBuilder;
 
@@ -21,6 +22,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
@@ -109,27 +112,17 @@ public class DriveCommands {
                 drive,
                 () -> new PathBuilder()
                         .addPath(new Path(new BezierLine(
-                                drive.getPose(),
+                                drive.getDesiredPose(),
                                 new Pose(
-                                        drive.getPose().getX() + Math.cos(drive.getPose().getHeading()) * distance.getAsDouble(),
-                                        drive.getPose().getY() + Math.sin(drive.getPose().getHeading()) * distance.getAsDouble(),
-                                        drive.getPose().getHeading()))))
+                                        drive.getDesiredPose().getX() + Math.cos(drive.getPose().getHeading()) * distance.getAsDouble(),
+                                        drive.getDesiredPose().getY() + Math.sin(drive.getPose().getHeading()) * distance.getAsDouble(),
+                                        drive.getDesiredPose().getHeading()))))
                         .setLinearHeadingInterpolation(drive.getPose().getHeading(), drive.getPose().getHeading())
                         .build());
     }
 
     public static Command backward(Drive drive, DoubleSupplier distance) {
-        return Drive.followPath(
-                drive,
-                () -> new PathBuilder()
-                        .addPath(new Path(new BezierLine(
-                                drive.getPose(),
-                                new Pose(
-                                        drive.getPose().getX() - Math.cos(drive.getPose().getHeading()) * distance.getAsDouble(),
-                                        drive.getPose().getY() - Math.sin(drive.getPose().getHeading()) * distance.getAsDouble(),
-                                        drive.getPose().getHeading()))))
-                        .setLinearHeadingInterpolation(drive.getPose().getHeading(), drive.getPose().getHeading())
-                        .build());
+        return forward(drive, () -> -distance.getAsDouble());
     }
 
     public static Command strafeLeft(Drive drive, DoubleSupplier distance) {
@@ -137,37 +130,26 @@ public class DriveCommands {
                 drive,
                 () -> new PathBuilder()
                         .addPath(new Path(new BezierLine(
-                                drive.getPose(),
+                                drive.getDesiredPose(),
                                 new Pose(
-                                        drive.getPose().getX() - Math.sin(drive.getPose().getHeading()) * distance.getAsDouble(),
-                                        drive.getPose().getY() + Math.cos(drive.getPose().getHeading()) * distance.getAsDouble(),
+                                        drive.getDesiredPose().getX() - Math.sin(drive.getDesiredPose().getHeading()) * distance.getAsDouble(),
+                                        drive.getDesiredPose().getY() + Math.cos(drive.getDesiredPose().getHeading()) * distance.getAsDouble(),
                                         drive.getPose().getHeading()))))
-                        .setLinearHeadingInterpolation(drive.getPose().getHeading(), drive.getPose().getHeading())
+                        .setLinearHeadingInterpolation(drive.getDesiredPose().getHeading(), drive.getDesiredPose().getHeading())
                         .build());
     }
 
     public static Command strafeRight(Drive drive, DoubleSupplier distance) {
-        return Drive.followPath(
-                drive,
-                () -> new PathBuilder()
-                        .addPath(new Path(new BezierLine(
-                                drive.getPose(),
-                                new Pose(
-                                        drive.getPose().getX() + Math.sin(drive.getPose().getHeading()) * distance.getAsDouble(),
-                                        drive.getPose().getY() - Math.cos(drive.getPose().getHeading()) * distance.getAsDouble(),
-                                        drive.getPose().getHeading()))))
-                        .setLinearHeadingInterpolation(drive.getPose().getHeading(), drive.getPose().getHeading())
-                        .build());
+        return strafeLeft(drive, () -> -distance.getAsDouble());
     }
-
 
     public static Command turn(Drive drive, DoubleSupplier angle) {
         return Drive.followPath(
                 drive,
                 () -> new PathBuilder()
-                        .addPath(new Path(new BezierLine(drive.getPose(), drive.getPose())))
-                        .setLinearHeadingInterpolation(drive.getPose().getHeading(), drive.getPose().getHeading() + Math.toRadians(angle.getAsDouble()))
-                        .build());
+                        .addPath(new Path(new BezierPoint(drive.getDesiredPose())))
+                        .setConstantHeadingInterpolation(drive.getDesiredPose().getHeading() + Math.toRadians(angle.getAsDouble()))
+                        .build()).until(drive::headingIsFinished).andThen(Commands.waitSeconds(0.5));
     }
 
     public static double signSquare(double num) {
