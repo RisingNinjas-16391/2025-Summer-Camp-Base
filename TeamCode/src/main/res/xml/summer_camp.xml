@@ -10,7 +10,7 @@
 
             <!--            <ContinuousRotationServo name="leftIntake" port="0"/>-->
 <!--            <ContinuousRotationServo name="rightIntake" port="1"/>-->
-            <Servo name = "claw" port="0"/>
+
             <goBILDAPinpoint name="pinpoint" port="0" bus="0"/>
 
 
@@ -20,6 +20,8 @@
             <goBILDA5202SeriesMotor name="FR" port="1"/>
             <goBILDA5202SeriesMotor name="BR" port="0"/>
 <!--            <goBILDA5202SeriesMotor name="shooter" port="2"/>&ndash;&gt;-->
+            <Servo name = "wrist" port="0"/>
+            <Servo name = "claw" port="1"/>
 
 
 

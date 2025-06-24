@@ -4,8 +4,8 @@ import com.acmerobotics.dashboard.config.Config;
 
 @Config
 public class ClawConstants {
-    public static double setpoint = 0.0;
+    public static double setpoint = 0.5;
 
     public static double OPEN = 0.5;
-    public static double CLOSE = 0.8;
+    public static double CLOSE = 0.76;
 }

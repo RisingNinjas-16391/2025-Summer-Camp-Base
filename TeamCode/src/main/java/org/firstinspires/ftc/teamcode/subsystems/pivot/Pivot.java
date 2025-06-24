@@ -68,6 +68,9 @@ public class Pivot extends SubsystemBase {
         pivotMotor.set(output);
     }
 
+    public double getPosition() {
+        return currentPosition;
+    }
     private void setPosition(double position) {
         desiredPosition = position;
     }
