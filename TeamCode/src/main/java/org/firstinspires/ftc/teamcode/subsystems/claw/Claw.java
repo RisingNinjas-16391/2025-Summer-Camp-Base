@@ -47,4 +47,16 @@ public class Claw extends SubsystemBase {
     public static Command setPosition(Claw claw, DoubleSupplier power) {
         return Commands.run(() -> claw.setPosition(power.getAsDouble()), claw);
     }
+
+    public static Command setPosition(Claw claw, double power) {
+        return setPosition(claw, () -> power);
+    }
+
+    public static Command open(Claw claw) {
+        return setPosition(claw, () -> ClawConstants.OPEN);
+    }
+
+    public static Command close(Claw claw) {
+        return setPosition(claw, () -> ClawConstants.CLOSE);
+    }
 }

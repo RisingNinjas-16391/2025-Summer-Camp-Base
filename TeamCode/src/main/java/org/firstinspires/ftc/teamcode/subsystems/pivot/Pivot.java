@@ -103,6 +103,10 @@ public class Pivot extends SubsystemBase {
         return Commands.run(() -> pivot.setPosition(position.getAsDouble()), pivot).until(pivot::isFinished);
     }
 
+    public static Command setPosition(Pivot pivot, double position) {
+        return setPosition(pivot, () -> position);
+    }
+
     public static Command score(Pivot pivot) {
         return Commands.runOnce(() -> pivot.setPosition(pivot.getPosition() - 0.1)).andThen(Commands.waitUntil(pivot::isFinished));
     }

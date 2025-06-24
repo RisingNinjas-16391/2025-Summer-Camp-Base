@@ -8,5 +8,5 @@ import org.firstinspires.ftc.teamcode.subsystems.servo_intake.ServoIntake;
 //public record Subsystems(Drive drive, Pivot pivot, Claw claw) {
 //}
 
-public record Subsystems(Drive drive, Pivot pivot, Claw claw) {
+public record Subsystems(Drive drive, Pivot pivot, Claw claw, ServoIntake servoIntake) {
 }
