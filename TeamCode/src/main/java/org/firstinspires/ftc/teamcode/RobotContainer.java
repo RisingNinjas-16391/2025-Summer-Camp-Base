@@ -57,10 +57,12 @@ public class RobotContainer {
     }
 
     public void configureButtonBindings() {
-        driverController.a().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.LOW));
-        driverController.b().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.MIDDLE));
+        driverController.a().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.FEED));
+        driverController.b().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.LOW));
         driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH));
         driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.CLIMB));
+
+        driverController.rightBumper().onTrue(Pivot.score(pivot));
     }
 
     public Command getAutoCommand(int chooser) {

@@ -13,8 +13,8 @@ public class PivotConstants {
 
     public static double initialPosition = -0.12;
 
-    public static double FEED = -0.12;
-    public static double LOW = 0.15;
-    public static double HIGH = 0.2;
-    public static double CLIMB = 0.5;
+    public static double FEED = -0.06;
+    public static double LOW = -0.15;
+    public static double HIGH = 0.22 ;
+    public static double CLIMB = 0.37;
 }
