@@ -51,9 +51,13 @@ public class AutoCommands {
     */
     public static Command blueAuto(Subsystems subsystems) {
         return Commands.sequence(
-                DriveCommands.forward(subsystems.drive(), 10)
-        );
-    }
+                DriveCommands.forward(subsystems.drive(), 20),
+                DriveCommands.strafeLeft(subsystems.drive(), 20),
+                DriveCommands.backward(subsystems.drive(), 20),
+                DriveCommands.strafeRight(subsystems.drive(), 20)
+                );
+        }
+
 
     public static Command redAuto(Subsystems subsystems) {
         return Commands.sequence(
