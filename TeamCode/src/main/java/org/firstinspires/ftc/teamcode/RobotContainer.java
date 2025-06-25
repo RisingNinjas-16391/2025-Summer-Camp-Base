@@ -22,8 +22,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 public class RobotContainer {
     private final Drive drive;
-    private final Pivot pivot;
-    private final Claw claw;
+//    private final Pivot pivot;
+//    private final Claw claw;
 
     private final Subsystems subsystems;
 
@@ -31,10 +31,10 @@ public class RobotContainer {
 
     public RobotContainer(HardwareMap hwMap, Telemetry telemetry, Gamepad gamepad1, Gamepad gamepad2, OpModeConstants autoNum) {
         drive = new Drive(hwMap, telemetry);
-        pivot = new Pivot(hwMap, telemetry);
-        claw = new Claw(hwMap, telemetry);
+//        pivot = new Pivot(hwMap, telemetry);
+//        claw = new Claw(hwMap, telemetry);
 
-        subsystems = new Subsystems(drive, pivot, claw);
+        subsystems = new Subsystems(drive);
 
         driverController = new CommandGamepad(gamepad1);
 
@@ -61,17 +61,17 @@ public class RobotContainer {
     }
 
     public void configureButtonBindings() {
-        driverController.a().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.FEED));
-        driverController.b().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.LOW));
-        driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH));
-        driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.CLIMB));
-
-        driverController.rightBumper().onTrue(Pivot.score(pivot).andThen(Claw.setPosition(claw, () -> ClawConstants.OPEN)));
-
-        driverController.leftTrigger().onTrue(Claw.setPosition(claw, () -> ClawConstants.OPEN));
-        driverController.rightTrigger().onTrue(Claw.setPosition(claw, () -> ClawConstants.CLOSE));
-
-        driverController.start().onTrue(Pivot.resetPosition(pivot));
+//        driverController.a().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.FEED));
+//        driverController.b().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.LOW));
+//        driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH));
+//        driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.CLIMB));
+//
+//        driverController.rightBumper().onTrue(Pivot.score(pivot).andThen(Claw.setPosition(claw, () -> ClawConstants.OPEN)));
+//
+//        driverController.leftTrigger().onTrue(Claw.setPosition(claw, () -> ClawConstants.OPEN));
+//        driverController.rightTrigger().onTrue(Claw.setPosition(claw, () -> ClawConstants.CLOSE));
+//
+//        driverController.start().onTrue(Pivot.resetPosition(pivot));
     }
 
     public Command getAutoCommand(OpModeConstants auto) {
