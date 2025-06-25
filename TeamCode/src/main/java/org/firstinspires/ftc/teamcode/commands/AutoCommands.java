@@ -62,7 +62,9 @@ public class AutoCommands {
 
     public static Command redAuto(Subsystems subsystems) {
         return Commands.sequence(
-                DriveCommands.forward(subsystems.drive(), 10)
+                DriveCommands.forward(subsystems.drive(), 50),
+                DriveCommands.turn(subsystems.drive(), 90),
+                DriveCommands.forward(subsystems.drive(), 72)
         );
     }
 }
