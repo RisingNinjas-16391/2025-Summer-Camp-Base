@@ -7,8 +7,6 @@ package edu.wpi.first.wpilibj2.command;
 import static edu.wpi.first.units.Units.Seconds;
 
 import edu.wpi.first.units.measure.Time;
-import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.Timer;
 
 /**
@@ -30,7 +28,6 @@ public class WaitCommand extends Command {
   @SuppressWarnings("this-escape")
   public WaitCommand(double seconds) {
     m_duration = seconds;
-    SendableRegistry.setName(this, getName() + ": " + seconds + " seconds");
   }
 
   /**
@@ -60,11 +57,5 @@ public class WaitCommand extends Command {
   @Override
   public boolean runsWhenDisabled() {
     return true;
-  }
-
-  @Override
-  public void initSendable(SendableBuilder builder) {
-    super.initSendable(builder);
-    builder.addDoubleProperty("duration", () -> m_duration, null);
   }
 }

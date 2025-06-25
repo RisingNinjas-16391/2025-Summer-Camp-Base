@@ -9,9 +9,6 @@ import static edu.wpi.first.util.ErrorMessages.requireNonNullParam;
 
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.util.function.BooleanConsumer;
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.util.sendable.SendableRegistry;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +24,7 @@ import java.util.function.BooleanSupplier;
  *
  * <p>This class is provided by the NewCommands VendorDep
  */
-public abstract class Command implements Sendable {
+public abstract class Command {
   /** Requirements set. */
   private final Set<Subsystem> m_requirements = new HashSet<>();
 
@@ -35,7 +32,6 @@ public abstract class Command implements Sendable {
   @SuppressWarnings("this-escape")
   protected Command() {
     String name = getClass().getName();
-    SendableRegistry.add(this, name.substring(name.lastIndexOf('.') + 1));
   }
 
   /** The initial subroutine of a command. Called once when the command is initially scheduled. */
@@ -118,7 +114,7 @@ public abstract class Command implements Sendable {
    * @return The display name of the Command
    */
   public String getName() {
-    return SendableRegistry.getName(this);
+    return getClass().getName();
   }
 
   /**
@@ -127,7 +123,6 @@ public abstract class Command implements Sendable {
    * @param name The display name of the Command.
    */
   public void setName(String name) {
-    SendableRegistry.setName(this, name);
   }
 
   /**
@@ -136,7 +131,7 @@ public abstract class Command implements Sendable {
    * @return Subsystem name
    */
   public String getSubsystem() {
-    return SendableRegistry.getSubsystem(this);
+    return getName();
   }
 
   /**
@@ -145,7 +140,6 @@ public abstract class Command implements Sendable {
    * @param subsystem subsystem name
    */
   public void setSubsystem(String subsystem) {
-    SendableRegistry.setSubsystem(this, subsystem);
   }
 
   /**
@@ -559,31 +553,6 @@ public abstract class Command implements Sendable {
     WrapperCommand wrapper = new WrapperCommand(Command.this) {};
     wrapper.setName(name);
     return wrapper;
-  }
-
-  @Override
-  public void initSendable(SendableBuilder builder) {
-    builder.setSmartDashboardType("Command");
-    builder.addStringProperty(".name", this::getName, null);
-    builder.addBooleanProperty(
-        "running",
-        this::isScheduled,
-        value -> {
-          if (value) {
-            if (!isScheduled()) {
-              schedule();
-            }
-          } else {
-            if (isScheduled()) {
-              cancel();
-            }
-          }
-        });
-    builder.addBooleanProperty(
-        ".isParented", () -> CommandScheduler.getInstance().isComposed(this), null);
-    builder.addStringProperty(
-        "interruptBehavior", () -> getInterruptionBehavior().toString(), null);
-    builder.addBooleanProperty("runsWhenDisabled", this::runsWhenDisabled, null);
   }
 
   /**
