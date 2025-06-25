@@ -23,13 +23,13 @@ wpi.maven.useDevelopment = true
 wpi.versions.wpilibVersion = '2025.+'
 wpi.versions.wpimathVersion = '2025.+'
 wpilibTools.deps.wpilibVersion = wpi.versions.wpilibVersion.get()
-
-def nativeConfigName = 'wpilibNatives'
-def nativeConfig = configurations.create(nativeConfigName)
-
-def nativeTasks = wpilibTools.createExtractionTasks {
-    configurationName = nativeConfigName
-}
+//
+//def nativeConfigName = 'wpilibNatives'
+//def nativeConfig = configurations.create(nativeConfigName)
+//
+//def nativeTasks = wpilibTools.createExtractionTasks {
+//    configurationName = nativeConfigName
+//}
 
 // Include common definitions from above.
 apply from: '../build.common.gradle'
@@ -44,10 +44,10 @@ android {
 }
 
 dependencies {
-    implementation wpilibTools.deps.wpilibJava("wpiutil")
-    implementation wpilibTools.deps.wpilibJava("wpimath")
+//    implementation wpilibTools.deps.wpilibJava("wpiutil")
+//    implementation wpilibTools.deps.wpilibJava("wpimath")
     implementation wpilibTools.deps.wpilibJava("wpiunits")
-    implementation wpilibTools.deps.wpilibJava("wpinet")
+//    implementation wpilibTools.deps.wpilibJava("wpinet")
 
     implementation project(':FtcRobotController')
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
@@ -60,7 +60,7 @@ dependencies {
 
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
-    implementation group: "us.hebi.quickbuf", name: "quickbuf-runtime", version: wpi.versions.quickbufVersion.get();
+//    implementation group: "us.hebi.quickbuf", name: "quickbuf-runtime", version: wpi.versions.quickbufVersion.get();
 }
 
 tasks.register('PullWPILibLibraries') {

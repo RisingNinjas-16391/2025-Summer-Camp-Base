@@ -6,7 +6,6 @@ package edu.wpi.first.wpilibj2.command;
 
 import static edu.wpi.first.util.ErrorMessages.requireNonNullParam;
 
-import edu.wpi.first.util.sendable.SendableBuilder;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -68,13 +67,5 @@ public class DeferredCommand extends Command {
   public void end(boolean interrupted) {
     m_command.end(interrupted);
     m_command = m_nullCommand;
-  }
-
-  @Override
-  @SuppressWarnings("PMD.CompareObjectsWithEquals")
-  public void initSendable(SendableBuilder builder) {
-    super.initSendable(builder);
-    builder.addStringProperty(
-        "deferred", () -> m_command == m_nullCommand ? "null" : m_command.getName(), null);
   }
 }

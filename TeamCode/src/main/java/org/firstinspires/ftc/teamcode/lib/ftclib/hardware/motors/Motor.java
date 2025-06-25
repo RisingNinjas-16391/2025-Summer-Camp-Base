@@ -11,9 +11,6 @@ import org.firstinspires.ftc.teamcode.lib.ftclib.hardware.HardwareDevice;
 
 import java.util.function.Supplier;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-
 /**
  * This is the common wrapper for the {@link DcMotor} object in the
  * FTC SDK.
@@ -226,12 +223,6 @@ public class Motor implements HardwareDevice {
      */
     protected GoBILDA type;
 
-    protected PIDController veloController = new PIDController(1, 0, 0);
-
-    protected PIDController positionController = new PIDController(1, 0, 0);
-
-    protected SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0, 1, 0);
-
     private boolean targetIsSet = false;
 
     protected double bufferFraction = 0.9;
@@ -292,16 +283,8 @@ public class Motor implements HardwareDevice {
      * @param output The percentage of power to set. Value should be between -1.0 and 1.0.
      */
     public void set(double output) {
-        if (runmode == RunMode.VelocityControl) {
-            double speed = bufferFraction * output * ACHIEVABLE_MAX_TICKS_PER_SECOND;
-            double velocity = veloController.calculate(getVelocity(), speed) + feedforward.calculate(speed, encoder.getAcceleration());
-            motor.setPower(velocity / ACHIEVABLE_MAX_TICKS_PER_SECOND);
-        } else if (runmode == RunMode.PositionControl) {
-            double error = positionController.calculate(getDistance());
-            motor.setPower(output * error);
-        } else {
             motor.setPower(output);
-        }
+
     }
 
     /**
@@ -333,13 +316,6 @@ public class Motor implements HardwareDevice {
     }
 
     /**
-     * @return if the motor is at the target position or distance
-     */
-    public boolean atTargetPosition() {
-        return positionController.atSetpoint();
-    }
-
-    /**
      * Resets the external encoder wrapper value.
      */
     public void resetEncoder() {
@@ -353,27 +329,6 @@ public class Motor implements HardwareDevice {
         encoder.resetVal = 0;
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
-
-    /**
-     * @return the velocity coefficients
-     */
-    public double[] getVeloCoefficients() {
-        return new double[]{veloController.getP(), veloController.getI(), veloController.getD()};
-    }
-
-    /**
-     * @return the position coefficient
-     */
-    public double getPositionCoefficient() {
-        return positionController.getP();
-    }
-
-    /**
-     * @return the feedforward coefficients
-     */
-    public double[] getFeedforwardCoefficients() {
-        return new double[]{feedforward.getKs(), feedforward.getKv(), feedforward.getKa()};
     }
 
     /**
@@ -425,21 +380,6 @@ public class Motor implements HardwareDevice {
         bufferFraction = fraction;
     }
 
-    /**
-     * Sets the {@link RunMode} of the motor
-     *
-     * @param runmode the desired runmode
-     */
-    public void setRunMode(RunMode runmode) {
-        this.runmode = runmode;
-        veloController.reset();
-        positionController.reset();
-        if (runmode == RunMode.PositionControl && !targetIsSet) {
-            setTargetPosition(getCurrentPosition());
-            targetIsSet = false;
-        }
-    }
-
     protected double getVelocity() {
         return ((DcMotorEx) motor).getVelocity();
     }
@@ -455,37 +395,6 @@ public class Motor implements HardwareDevice {
 
     public double getVoltage() {
         return motor.getPower() * 12;
-    }
-    /**
-     * Sets the target position for the motor to the desired target.
-     * Once {@link #set(double)} is called, the motor will attempt to move in the direction
-     * of said target.
-     *
-     * @param target the target position in ticks
-     */
-    public void setTargetPosition(int target) {
-        setTargetDistance(target * encoder.dpp);
-    }
-
-    /**
-     * Sets the target distance for the motor to the desired target.
-     * Once {@link #set(double)} is called, the motor will attempt to move in the direction
-     * of said target.
-     *
-     * @param target the target position in units of distance
-     */
-    public void setTargetDistance(double target) {
-        targetIsSet = true;
-        positionController.setSetpoint(target);
-    }
-
-    /**
-     * Sets the target tolerance
-     *
-     * @param tolerance the specified tolerance
-     */
-    public void setPositionTolerance(double tolerance) {
-        positionController.setTolerance(tolerance);
     }
 
     /**
@@ -504,47 +413,6 @@ public class Motor implements HardwareDevice {
      */
     public boolean getInverted() {
         return DcMotor.Direction.REVERSE == motor.getDirection();
-    }
-
-    /**
-     * Set the velocity pid coefficients for the motor.
-     *
-     * @param kp the proportional gain
-     * @param ki the integral gain
-     * @param kd the derivative gain
-     */
-    public void setVeloCoefficients(double kp, double ki, double kd) {
-        veloController.setPID(kp, ki, kd);
-    }
-
-    /**
-     * Set the feedforward coefficients for the motor.
-     *
-     * @param ks the static gain
-     * @param kv the velocity gain
-     */
-    public void setFeedforwardCoefficients(double ks, double kv) {
-        feedforward = new SimpleMotorFeedforward(ks, kv);
-    }
-
-    /**
-     * Set the feedforward coefficients for the motor.
-     *
-     * @param ks the static gain
-     * @param kv the velocity gain
-     * @param ka the acceleration gain
-     */
-    public void setFeedforwardCoefficients(double ks, double kv, double ka) {
-        feedforward = new SimpleMotorFeedforward(ks, kv, ka);
-    }
-
-    /**
-     * Set the proportional gain for the position controller.
-     *
-     * @param kp the proportional gain
-     */
-    public void setPositionCoefficient(double kp) {
-        positionController.setP(kp);
     }
 
     /**
