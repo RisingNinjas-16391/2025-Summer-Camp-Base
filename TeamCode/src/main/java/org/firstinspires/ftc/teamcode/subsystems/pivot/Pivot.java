@@ -9,7 +9,6 @@ import org.firstinspires.ftc.teamcode.lib.ftclib.hardware.motors.MotorEx;
 import java.nio.channels.Pipe;
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -70,7 +69,7 @@ public class Pivot extends SubsystemBase {
     private void calculateVoltage(double position) {
         telemetry.addData("Pivot Desired Position", position);
 
-        double output = controller.calculate(PivotConstants.kP, position, currentPosition) + PivotConstants.kG * Math.cos(Units.rotationsToRadians(currentPosition));
+        double output = controller.calculate(PivotConstants.kP, position, currentPosition) + PivotConstants.kG * Math.cos(currentPosition * 2 * Math.PI);
         pivotMotor.set(output);
     }
 

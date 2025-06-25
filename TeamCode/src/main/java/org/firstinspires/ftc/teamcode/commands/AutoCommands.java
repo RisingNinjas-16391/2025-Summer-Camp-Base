@@ -20,7 +20,7 @@ public class AutoCommands {
     DriveCommands.forward(subsystems.drive(), distance),
     DriveCommands.backward(subsystems.drive(), distance),
     DriveCommands.strafeLeft(subsystems.drive(), distance),
-    DriveCommands.strafeLeft(subsystems.drive(), distance),
+    DriveCommands.strafeRight(subsystems.drive(), distance),
 
     (Replace angle with a number):
     DriveCommands.turn(subsystems.drive(), angle),
