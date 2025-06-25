@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 @Config
 public class AutoCommands {
+    public static double Move1 = 10;
+    public static double Turn1 = 90;
+    public static double Turn2 = 90;
     /*
     Available Commands:
 
@@ -52,12 +55,20 @@ public class AutoCommands {
     public static Command blueAuto(Subsystems subsystems) {
         return Commands.sequence(
                 DriveCommands.forward(subsystems.drive(), 10)
+
         );
     }
 
     public static Command redAuto(Subsystems subsystems) {
         return Commands.sequence(
-                DriveCommands.forward(subsystems.drive(), 10)
+                DriveCommands.forward(subsystems.drive(), Move1),
+                DriveCommands.turn(subsystems.drive(), Turn1),
+                DriveCommands.forward(subsystems.drive(), Move1),
+                DriveCommands.turn(subsystems.drive(), Turn2),
+                DriveCommands.forward(subsystems.drive(), Move1),
+                DriveCommands.turn(subsystems.drive(), Turn1),
+                DriveCommands.forward(subsystems.drive(), Move1),
+                DriveCommands.turn(subsystems.drive(), Turn2)
         );
     }
 }
