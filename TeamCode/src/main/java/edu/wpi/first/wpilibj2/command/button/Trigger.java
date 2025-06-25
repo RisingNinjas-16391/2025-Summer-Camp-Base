@@ -6,7 +6,6 @@ package edu.wpi.first.wpilibj2.command.button;
 
 import static edu.wpi.first.util.ErrorMessages.requireNonNullParam;
 
-import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -286,35 +285,35 @@ public class Trigger implements BooleanSupplier {
     return new Trigger(m_loop, () -> !m_condition.getAsBoolean());
   }
 
-  /**
-   * Creates a new debounced trigger from this trigger - it will become active when this trigger has
-   * been active for longer than the specified period.
-   *
-   * @param seconds The debounce period.
-   * @return The debounced trigger (rising edges debounced only)
-   */
-  public Trigger debounce(double seconds) {
-    return debounce(seconds, Debouncer.DebounceType.kRising);
-  }
-
-  /**
-   * Creates a new debounced trigger from this trigger - it will become active when this trigger has
-   * been active for longer than the specified period.
-   *
-   * @param seconds The debounce period.
-   * @param type The debounce type.
-   * @return The debounced trigger.
-   */
-  public Trigger debounce(double seconds, Debouncer.DebounceType type) {
-    return new Trigger(
-        m_loop,
-        new BooleanSupplier() {
-          final Debouncer m_debouncer = new Debouncer(seconds, type);
-
-          @Override
-          public boolean getAsBoolean() {
-            return m_debouncer.calculate(m_condition.getAsBoolean());
-          }
-        });
-  }
+//  /**
+//   * Creates a new debounced trigger from this trigger - it will become active when this trigger has
+//   * been active for longer than the specified period.
+//   *
+//   * @param seconds The debounce period.
+//   * @return The debounced trigger (rising edges debounced only)
+//   */
+//  public Trigger debounce(double seconds) {
+//    return debounce(seconds, Debouncer.DebounceType.kRising);
+//  }
+//
+//  /**
+//   * Creates a new debounced trigger from this trigger - it will become active when this trigger has
+//   * been active for longer than the specified period.
+//   *
+//   * @param seconds The debounce period.
+//   * @param type The debounce type.
+//   * @return The debounced trigger.
+//   */
+//  public Trigger debounce(double seconds, Debouncer.DebounceType type) {
+//    return new Trigger(
+//        m_loop,
+//        new BooleanSupplier() {
+//          final Debouncer m_debouncer = new Debouncer(seconds, type);
+//
+//          @Override
+//          public boolean getAsBoolean() {
+//            return m_debouncer.calculate(m_condition.getAsBoolean());
+//          }
+//        });
+//  }
 }
