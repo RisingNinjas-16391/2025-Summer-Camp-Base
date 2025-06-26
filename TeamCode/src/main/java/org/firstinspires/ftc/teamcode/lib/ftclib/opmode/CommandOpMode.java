@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.lib.ftclib.opmode;
 
+import com.qualcomm.hardware.lynx.LynxModule;
+
+import java.util.List;
+
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**

@@ -4,7 +4,6 @@
 
 package edu.wpi.first.wpilibj2.command;
 
-import edu.wpi.first.util.sendable.SendableBuilder;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -142,12 +141,5 @@ public class ParallelDeadlineGroup extends Command {
   @Override
   public InterruptionBehavior getInterruptionBehavior() {
     return m_interruptBehavior;
-  }
-
-  @Override
-  public void initSendable(SendableBuilder builder) {
-    super.initSendable(builder);
-
-    builder.addStringProperty("deadline", m_deadline::getName, null);
   }
 }

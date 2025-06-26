@@ -10,9 +10,6 @@ import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.teamcode.lib.ftclib.opmode.Robot;
 
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import java.io.PrintWriter;
@@ -41,7 +38,7 @@ import java.util.function.Consumer;
  *
  * <p>This class is provided by the NewCommands VendorDep
  */
-public final class CommandScheduler implements Sendable, AutoCloseable {
+public final class CommandScheduler implements AutoCloseable {
   /** The Singleton Instance. */
   private static CommandScheduler instance;
 
@@ -121,7 +118,7 @@ public final class CommandScheduler implements Sendable, AutoCloseable {
 
   @Override
   public void close() {
-    SendableRegistry.remove(this);
+//    SendableRegistry.remove(this);
 //    LiveWindow.setEnabledListener(null);
 //    LiveWindow.setDisabledListener(null);
   }
@@ -740,47 +737,5 @@ public final class CommandScheduler implements Sendable, AutoCloseable {
 
   Set<Command> getComposedCommands() {
     return m_composedCommands.keySet();
-  }
-
-  @Override
-  public void initSendable(SendableBuilder builder) {
-    builder.setSmartDashboardType("Scheduler");
-    builder.addStringArrayProperty(
-        "Names",
-        () -> {
-          String[] names = new String[m_scheduledCommands.size()];
-          int i = 0;
-          for (Command command : m_scheduledCommands) {
-            names[i] = command.getName();
-            i++;
-          }
-          return names;
-        },
-        null);
-    builder.addIntegerArrayProperty(
-        "Ids",
-        () -> {
-          long[] ids = new long[m_scheduledCommands.size()];
-          int i = 0;
-          for (Command command : m_scheduledCommands) {
-            ids[i] = command.hashCode();
-            i++;
-          }
-          return ids;
-        },
-        null);
-    builder.addIntegerArrayProperty(
-        "Cancel",
-        () -> new long[] {},
-        toCancel -> {
-          Map<Long, Command> ids = new LinkedHashMap<>();
-          for (Command command : m_scheduledCommands) {
-            long id = command.hashCode();
-            ids.put(id, command);
-          }
-          for (long hash : toCancel) {
-            cancel(ids.get(hash));
-          }
-        });
   }
 }
