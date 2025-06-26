@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Subsystems;
 import org.firstinspires.ftc.teamcode.subsystems.claw.Claw;
 import org.firstinspires.ftc.teamcode.subsystems.claw.ClawConstants;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drive;
+import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.Pivot;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.PivotConstants;
 
@@ -22,7 +23,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 public class RobotContainer {
     private final Drive drive;
-//    private final Pivot pivot;
+    private final Pivot pivot;
+    private final Intake intake;
 //    private final Claw claw;
 
     private final Subsystems subsystems;
@@ -31,10 +33,13 @@ public class RobotContainer {
 
     public RobotContainer(HardwareMap hwMap, Telemetry telemetry, Gamepad gamepad1, Gamepad gamepad2, OpModeConstants autoNum) {
         drive = new Drive(hwMap, telemetry);
+        pivot = new Pivot(hwMap, telemetry);
+        intake = new Intake(hwMap, telemetry, "intake");
+
 //        pivot = new Pivot(hwMap, telemetry);
 //        claw = new Claw(hwMap, telemetry);
 
-        subsystems = new Subsystems(drive);
+        subsystems = new Subsystems(drive, pivot, intake);
 
         driverController = new CommandGamepad(gamepad1);
 

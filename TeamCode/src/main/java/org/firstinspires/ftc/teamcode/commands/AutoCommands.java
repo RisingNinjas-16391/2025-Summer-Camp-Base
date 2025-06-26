@@ -5,11 +5,14 @@ import com.pedropathing.localization.Pose;
 
 import org.firstinspires.ftc.teamcode.subsystems.Subsystems;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drive;
+import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeConstants;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.Pivot;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.PivotConstants;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
 @Config
 public class AutoCommands {
@@ -47,11 +50,21 @@ public class AutoCommands {
     Wrist (Replace PRESET with a valid Wrist preset):
     Wrist.setPosition(subsystems.wrist(), WristPresets.PRESET),
     Wrist.setPosition(subsystems.wrist(), () -> WristPresets.PRESET),
-
     */
+
+    public static double BLUE_AUTO_FORWARD_DISTANCE = 64.0;
+    public static double BLUE_AUTO_STRAFE_DISTANCE = 50.0;
+
     public static Command blueAuto(Subsystems subsystems) {
         return Commands.sequence(
-                DriveCommands.forward(subsystems.drive(), 10)
+                new ParallelCommandGroup(
+                DriveCommands.driveToPose(subsystems.drive(), () -> new Pose(
+                        BLUE_AUTO_FORWARD_DISTANCE,
+                        BLUE_AUTO_STRAFE_DISTANCE
+                )),
+                Pivot.setPosition(subsystems.pivot(), () -> PivotConstants.HIGH)),
+                Intake.setPower(subsystems.intake(), () -> 1.0),
+                DriveCommands.driveToPose(subsystems.drive(), Pose::new)
         );
     }
 
