@@ -142,7 +142,7 @@ public class DriveCommands {
                 () -> new PathBuilder()
                         .addPath(new Path(new BezierPoint(drive.getDesiredPose())))
                         .setConstantHeadingInterpolation(drive.getDesiredPose().getHeading() + Math.toRadians(angle.getAsDouble()))
-                        .build()).until(drive::headingIsFinished).andThen(Commands.waitSeconds(0.5));
+                        .build()).until(drive::headingIsFinished).andThen(Commands.waitSeconds(1.0));
     }
 
     public static Command forward(Drive drive, double distance) {

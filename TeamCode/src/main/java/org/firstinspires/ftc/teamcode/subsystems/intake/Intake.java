@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems.intake;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.lib.ftclib.hardware.motors.Motor;
 import org.firstinspires.ftc.teamcode.lib.ftclib.hardware.motors.MotorEx;
 
 import java.util.function.DoubleSupplier;
@@ -20,6 +21,8 @@ public class Intake extends SubsystemBase {
         this.telemetry = telemetry;
 
         intake = new MotorEx(hwMap, name);
+
+        intake.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
     }
 
     @Override

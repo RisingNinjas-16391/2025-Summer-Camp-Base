@@ -51,14 +51,14 @@ public class AutoCommands {
     */
     public static Command blueAuto(Subsystems subsystems) {
         return Commands.sequence(
-                DriveCommands.forward(subsystems.drive(), 10),
+                DriveCommands.forward(subsystems.drive(), 47.5),
+                DriveCommands.turn(subsystems.drive(), -90),
+                DriveCommands.forward(subsystems.drive(), 71.5),
+                DriveCommands.backward(subsystems.drive(), 9),
+                DriveCommands.strafeRight(subsystems.drive(), 51),
+                DriveCommands.strafeRight(subsystems.drive(), 51),
                 DriveCommands.strafeLeft(subsystems.drive(), 5),
-                DriveCommands.backward(subsystems.drive(), 2),
-                DriveCommands.strafeRight(subsystems.drive(), 5),
-                DriveCommands.forward(subsystems.drive(), 8)
-
-
-
+                DriveCommands.backward(subsystems.drive(), 65)
 
                 );
     }
@@ -69,7 +69,10 @@ public class AutoCommands {
                 DriveCommands.turn(subsystems.drive(), 90),
                 DriveCommands.forward(subsystems.drive(), 71.5),
                 DriveCommands.backward(subsystems.drive(), 9),
-                DriveCommands.strafeLeft(subsystems.drive(), 51)
+                DriveCommands.strafeLeft(subsystems.drive(), 51),
+                DriveCommands.strafeLeft(subsystems.drive(), -5),
+                DriveCommands.backward(subsystems.drive(), 65)
+
         );
     }
 }
