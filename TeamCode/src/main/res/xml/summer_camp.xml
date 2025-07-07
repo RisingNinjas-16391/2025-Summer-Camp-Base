@@ -19,7 +19,9 @@
 
             <goBILDA5202SeriesMotor name="FR" port="1"/>
             <goBILDA5202SeriesMotor name="BR" port="0"/>
-<!--            <goBILDA5202SeriesMotor name="shooter" port="2"/>&ndash;&gt;-->
+            <goBILDA5202SeriesMotor name="intake" port="2"/>-->
+
+            <!--            <goBILDA5202SeriesMotor name="shooter" port="2"/>&ndash;&gt;-->
 
 
 

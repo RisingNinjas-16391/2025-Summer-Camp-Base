@@ -5,6 +5,7 @@ import com.pedropathing.localization.Pose;
 
 import org.firstinspires.ftc.teamcode.subsystems.Subsystems;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drive;
+import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.Pivot;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.PivotConstants;
 
@@ -49,15 +50,50 @@ public class AutoCommands {
     Wrist.setPosition(subsystems.wrist(), () -> WristPresets.PRESET),
 
     */
-    public static Command blueAuto(Subsystems subsystems) {
-        return Commands.sequence(
-                DriveCommands.forward(subsystems.drive(), 10)
-        );
-    }
 
     public static Command redAuto(Subsystems subsystems) {
         return Commands.sequence(
-                DriveCommands.forward(subsystems.drive(), 10)
+                Pivot.setPosition(subsystems.pivot(), PivotConstants.CLIMB).withTimeout(0.5),
+                DriveCommands.driveToPose(subsystems.drive(), new Pose(63,-50)),
+                DriveCommands.turn(subsystems.drive(), 180),
+                Commands.waitSeconds(1),
+                Intake.setPower(subsystems.intake(), -0.725).withTimeout(2),
+                DriveCommands.driveToPose(subsystems.drive(), new Pose(40,0)),
+                Intake.setPower(subsystems.intake(), 1).withTimeout(2),
+                Pivot.setPosition(subsystems.pivot(), PivotConstants.FEED).withTimeout(0.5),
+                DriveCommands.forward(subsystems.drive(), 23),
+                Intake.setPower(subsystems.intake(), 0),
+                Pivot.setPosition(subsystems.pivot(), PivotConstants.CLIMB).withTimeout(0.5),
+                DriveCommands.driveToPose(subsystems.drive(), new Pose(63,-50)),
+                DriveCommands.turn(subsystems.drive(), 180),
+                Commands.waitSeconds(2),
+                Intake.setPower(subsystems.intake(), -0.75).withTimeout(2),
+                DriveCommands.turn(subsystems.drive(), 180),
+                DriveCommands.driveToPose(subsystems.drive(), new Pose(0,0))
+        );
+    }
+
+    public static Command blueAuto(Subsystems subsystems) {
+        return Commands.sequence(
+                Pivot.setPosition(subsystems.pivot(), PivotConstants.CLIMB).withTimeout(0.5),
+                DriveCommands.driveToPose(subsystems.drive(), new Pose(63,50)),
+                DriveCommands.turn(subsystems.drive(), 180),
+                //Pivot.setPosition(subsystems.pivot(), PivotConstants.CLIMB),
+                Commands.waitSeconds(2),
+                Intake.setPower(subsystems.intake(), -0.75).withTimeout(2).withTimeout(0.5),
+                DriveCommands.turn(subsystems.drive(), 180),
+                DriveCommands.driveToPose(subsystems.drive(), new Pose(40,0)),
+                Intake.setPower(subsystems.intake(), 1).withTimeout(10),
+                Pivot.setPosition(subsystems.pivot(), PivotConstants.FEED).withTimeout(0.5),
+                DriveCommands.forward(subsystems.drive(), 23),
+                Intake.setPower(subsystems.intake(), 0),
+                Pivot.setPosition(subsystems.pivot(), PivotConstants.CLIMB).withTimeout(0.5),
+                DriveCommands.driveToPose(subsystems.drive(), new Pose(63,50)),
+                DriveCommands.turn(subsystems.drive(), 180),
+                Commands.waitSeconds(2),
+                Intake.setPower(subsystems.intake(), -0.75).withTimeout(2),
+                DriveCommands.turn(subsystems.drive(), 180),
+                DriveCommands.driveToPose(subsystems.drive(), new Pose(0,0))
         );
     }
 }

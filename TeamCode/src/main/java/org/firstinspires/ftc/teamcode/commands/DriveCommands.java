@@ -86,6 +86,10 @@ public class DriveCommands {
                         .build());
     }
 
+    public static Command driveToPose(Drive drive, Pose pose) {
+        return driveToPose(drive, () -> pose);
+    }
+
     public static Command driveToPose(Drive drive, Supplier<Pose> pose, Command command, DoubleSupplier commandActivationPoint) {
         return Commands.parallel(
                 driveToPose(drive, pose),
