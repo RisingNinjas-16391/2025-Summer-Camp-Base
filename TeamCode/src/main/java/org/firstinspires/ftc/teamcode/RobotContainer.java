@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.opmodes.OpModeConstants;
 import org.firstinspires.ftc.teamcode.subsystems.Subsystems;
 import org.firstinspires.ftc.teamcode.subsystems.claw.Claw;
 import org.firstinspires.ftc.teamcode.subsystems.claw.ClawConstants;
+import org.firstinspires.ftc.teamcode.subsystems.climb.Climb;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.Pivot;
@@ -25,6 +26,7 @@ public class RobotContainer {
     private final Drive drive;
     private final Pivot pivot;
     private final Intake intake;
+    private final Climb climb;
 
     private final Subsystems subsystems;
 
@@ -34,8 +36,9 @@ public class RobotContainer {
         drive = new Drive(hwMap, telemetry);
         pivot = new Pivot(hwMap, telemetry);
         intake = new Intake(hwMap, telemetry, "intake");
+        climb = new Climb(hwMap, telemetry);
 
-        subsystems = new Subsystems(drive, pivot, intake);
+        subsystems = new Subsystems(drive, pivot, intake, climb);
 
         driverController = new CommandGamepad(gamepad1);
 
@@ -61,7 +64,7 @@ public class RobotContainer {
         );
 
         intake.setDefaultCommand(Intake.setPower(intake,
-                () -> -driverController.getRightTrigger() + driverController.getLeftTrigger()));
+                () -> + driverController.getRightTrigger() - driverController.getLeftTrigger()));
     }
 
     public void configureButtonBindings() {
@@ -70,7 +73,13 @@ public class RobotContainer {
         driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH));
         driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.CLIMB));
 
+        driverController.dpadDown().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.ZERO));
+
+
         driverController.start().onTrue(Pivot.resetPosition(pivot));
+
+        driverController.dpadUp().onTrue(Climb.setPower(climb, () -> 1.0));
+        driverController.dpadDown().onTrue(Climb.setPower(climb, () -> -1.0));
     }
 
     public Command getAutoCommand(OpModeConstants auto) {

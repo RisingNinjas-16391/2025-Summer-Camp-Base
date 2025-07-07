@@ -8,9 +8,9 @@
             <goBILDA5202SeriesMotor name="pivot" port="2"/>-->
 
 
-            <!--            <ContinuousRotationServo name="leftIntake" port="0"/>-->
+                        <ContinuousRotationServo name="climb" port="0"/>
 <!--            <ContinuousRotationServo name="rightIntake" port="1"/>-->
-            <Servo name = "claw" port="0"/>
+<!--            <Servo name = "claw" port="0"/>-->
             <goBILDAPinpoint name="pinpoint" port="0" bus="0"/>
 
 

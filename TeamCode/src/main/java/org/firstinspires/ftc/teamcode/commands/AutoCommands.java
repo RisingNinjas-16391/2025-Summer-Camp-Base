@@ -5,6 +5,7 @@ import com.pedropathing.localization.Pose;
 
 import org.firstinspires.ftc.teamcode.subsystems.Subsystems;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drive;
+import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.Pivot;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.PivotConstants;
 
@@ -51,28 +52,57 @@ public class AutoCommands {
     */
     public static Command blueAuto(Subsystems subsystems) {
         return Commands.sequence(
-                DriveCommands.forward(subsystems.drive(), 47.5),
-                DriveCommands.turn(subsystems.drive(), -90),
-                DriveCommands.forward(subsystems.drive(), 71.5),
-                DriveCommands.backward(subsystems.drive(), 9),
+                Commands.parallel(
+                        DriveCommands.driveToPose(subsystems.drive(), () -> new Pose(50.5, -71.5, Math.toRadians(-90))),
+                        Pivot.setPosition(subsystems.pivot(), () -> PivotConstants.LOW)
+                ),
+                Intake.setPower(subsystems.intake(), () -> 1).withTimeout(0.5),
+                Intake.setPower(subsystems.intake(), () -> 0).withTimeout(0.5),
+                DriveCommands.backward(subsystems.drive(), 18),
+                Pivot.setPosition(subsystems.pivot(), () -> PivotConstants.FEED),
                 DriveCommands.strafeRight(subsystems.drive(), 51),
-                DriveCommands.strafeRight(subsystems.drive(), 51),
+                DriveCommands.forward(subsystems.drive(), 5.5555555555),
+                Intake.setPower(subsystems.intake(), () -> -1).withTimeout(0.5),
+                Intake.setPower(subsystems.intake(), () -> 0).withTimeout(0.5),
                 DriveCommands.strafeLeft(subsystems.drive(), 5),
-                DriveCommands.backward(subsystems.drive(), 65)
-
+                DriveCommands.backward(subsystems.drive(), 21),
+                DriveCommands.strafeLeft(subsystems.drive(), 15),
+                Commands.parallel(
+                        DriveCommands.driveToPose(subsystems.drive(), () -> new Pose(53.5, -71.5, Math.toRadians(-90))),
+                        Pivot.setPosition(subsystems.pivot(), () -> PivotConstants.LOW)
+                ),                Intake.setPower(subsystems.intake(), () -> 1).withTimeout(0.5),
+                Intake.setPower(subsystems.intake(), () -> 0).withTimeout(0.5),
+                DriveCommands.backward(subsystems.drive(), 65),
+                DriveCommands.strafeRight(subsystems.drive(), 51)
                 );
     }
 
     public static Command redAuto(Subsystems subsystems) {
         return Commands.sequence(
-                DriveCommands.forward(subsystems.drive(), 47.5),
-                DriveCommands.turn(subsystems.drive(), 90),
-                DriveCommands.forward(subsystems.drive(), 71.5),
-                DriveCommands.backward(subsystems.drive(), 9),
-                DriveCommands.strafeLeft(subsystems.drive(), 51),
-                DriveCommands.strafeLeft(subsystems.drive(), -5),
-                DriveCommands.backward(subsystems.drive(), 65)
+                Commands.parallel(
+                        DriveCommands.driveToPose(subsystems.drive(), () -> new Pose(47.5, 71.5, Math.toRadians(90))),
+                        Pivot.setPosition(subsystems.pivot(), () -> PivotConstants.LOW)
+                        ),
+//                DriveCommands.forward(subsystems.drive(), 47.5),
+//                DriveCommands.turn(subsystems.drive(), 90),
+//                DriveCommands.forward(subsystems.drive(), 71.5),
+                Intake.setPower(subsystems.intake(), () -> 1).withTimeout(0.5),
+                Intake.setPower(subsystems.intake(), () -> 0).withTimeout(0.5),
+                DriveCommands.backward(subsystems.drive(), 18),
+                Pivot.setPosition(subsystems.pivot(), () -> PivotConstants.FEED),
 
+                DriveCommands.strafeLeft(subsystems.drive(), 51),
+                DriveCommands.forward(subsystems.drive(), 5.5555555555),
+                Intake.setPower(subsystems.intake(), () -> -1).withTimeout(0.5),
+                Intake.setPower(subsystems.intake(), () -> 0).withTimeout(0.5),
+                DriveCommands.backward(subsystems.drive(), 17.5),
+                Commands.parallel(
+                        DriveCommands.driveToPose(subsystems.drive(), () -> new Pose(47.5, 71.5, Math.toRadians(90))),
+                        Pivot.setPosition(subsystems.pivot(), () -> PivotConstants.LOW)
+                ),                Intake.setPower(subsystems.intake(), () -> 1).withTimeout(0.5),
+                Intake.setPower(subsystems.intake(), () -> 0).withTimeout(0.5),
+                DriveCommands.backward(subsystems.drive(), 65),
+                DriveCommands.strafeLeft(subsystems.drive(), 51)
         );
     }
 }
