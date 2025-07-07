@@ -51,7 +51,7 @@ public class RobotContainer {
         }
     }
 
-    public void setDefaultCommands(){
+    public void setDefaultCommands() {
         drive.setDefaultCommand(
                 Commands.sequence(
                         DriveCommands.setPose(drive, () -> PoseStorage.currentPose),
@@ -61,22 +61,21 @@ public class RobotContainer {
                                 () -> DriveCommands.signSquare(-driverController.getLeftX()),
                                 () -> DriveCommands.signSquare(-driverController.getRightX()))
                 )
-
         );
+
+        intake.setDefaultCommand(Intake.setPower(intake, () ->
+                driverController.getRightTrigger() - driverController.getLeftTrigger()
+        ));
     }
 
     public void configureButtonBindings() {
-//        driverController.a().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.FEED));
-//        driverController.b().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.LOW));
-//        driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH));
-//        driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.CLIMB));
+        driverController.a().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.FEED));
+        driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH));
+        driverController.b().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.LOW));
+        driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.CLIMB));
+
 //
-//        driverController.rightBumper().onTrue(Pivot.score(pivot).andThen(Claw.setPosition(claw, () -> ClawConstants.OPEN)));
-//
-//        driverController.leftTrigger().onTrue(Claw.setPosition(claw, () -> ClawConstants.OPEN));
-//        driverController.rightTrigger().onTrue(Claw.setPosition(claw, () -> ClawConstants.CLOSE));
-//
-//        driverController.start().onTrue(Pivot.resetPosition(pivot));
+         driverController.start().onTrue(Pivot.resetPosition(pivot));
     }
 
     public Command getAutoCommand(OpModeConstants auto) {
