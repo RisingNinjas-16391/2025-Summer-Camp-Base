@@ -63,16 +63,17 @@ public class RobotContainer {
 
     public void configureButtonBindings() {
         driverController.a().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.FEED));
-        driverController.b().onTrue(Intake.setPower(intake,0));
+        driverController.dpadDown().onTrue(Intake.setPower(intake,0));
+        driverController.b().onTrue(Pivot.setPosition(pivot,()->PivotConstants.CONE));
         driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH));
         driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH2));
 //
 //        driverController.rightBumper().onTrue(Pivot.score(pivot).andThen(Claw.setPosition(claw, () -> ClawConstants.OPEN)));
 //
-        driverController.leftTrigger().onTrue(Commands.either((Intake.setPower(intake,-0.8)),Intake.setPower(intake,-0.7),()->pivot.getPosition()>-0.6)).onFalse(Intake.setPower(intake,.35));
+        driverController.leftTrigger().whileTrue(Intake.setPower(intake,-1)).onFalse(Intake.setPower(intake,.35));
         driverController.rightTrigger().whileTrue(Intake.setPower(intake,1)).onFalse(Intake.setPower(intake,.35));
 //
-//        driverController.start().onTrue(Pivot.resetPosition(pivot));
+        driverController.start().onTrue(Pivot.resetPosition(pivot));
     }
 
     public Command getAutoCommand(OpModeConstants auto) {
