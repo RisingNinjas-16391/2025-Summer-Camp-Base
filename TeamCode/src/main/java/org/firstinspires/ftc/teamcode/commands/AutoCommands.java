@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode.commands;
 
+import android.health.connect.datatypes.units.Power;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.localization.Pose;
 
 import org.firstinspires.ftc.teamcode.subsystems.Subsystems;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drive;
+import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.Pivot;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.PivotConstants;
 
@@ -51,13 +54,40 @@ public class AutoCommands {
     */
     public static Command blueAuto(Subsystems subsystems) {
         return Commands.sequence(
-                DriveCommands.forward(subsystems.drive(), 10)
+//                DriveCommands.setPose(subsystems.drive(), () -> new Pose(0, 0, Math.toRadians(-90))),
+                DriveCommands.strafeLeft(subsystems.drive(), 50),
+                Pivot.setPosition(subsystems.pivot(),()-> PivotConstants.HIGH),
+                DriveCommands.forward(subsystems.drive(), 66.5),
+                Intake.setPower(subsystems.intake(), () -> -1).withTimeout(2),
+                Commands.waitSeconds(1),
+                DriveCommands.backward(subsystems.drive(), 64.5),
+                DriveCommands.turn(subsystems.drive(), 90),
+                Pivot.setPosition(subsystems.pivot(),()-> PivotConstants.FEED).withTimeout(.5),
+                DriveCommands.backward(subsystems.drive(), 50)
+
+
+
+
+
+
+
         );
     }
 
     public static Command redAuto(Subsystems subsystems) {
         return Commands.sequence(
-                DriveCommands.forward(subsystems.drive(), 10)
+//                DriveCommands.setPose(subsystems.drive(), () -> new Pose(0, 0, Math.toRadians(90))),
+                DriveCommands.strafeRight(subsystems.drive(), 50),
+                Pivot.setPosition(subsystems.pivot(),()-> PivotConstants.HIGH),
+                DriveCommands.forward(subsystems.drive(), 67),
+                Intake.setPower(subsystems.intake(), () -> -2).withTimeout(2.5),
+                Commands.waitSeconds(1),
+                DriveCommands.backward(subsystems.drive(), 64.5),
+                DriveCommands.turn(subsystems.drive(), -90 ),
+                Pivot.setPosition(subsystems.pivot(),()-> PivotConstants.FEED).withTimeout(.5),
+                DriveCommands.backward(subsystems.drive(), 50)
+
+
         );
     }
 }

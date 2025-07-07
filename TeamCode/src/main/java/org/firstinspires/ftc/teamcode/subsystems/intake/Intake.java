@@ -36,7 +36,7 @@ public class Intake extends SubsystemBase {
     }
 
     public static Command setPower(Intake intake, DoubleSupplier power) {
-        return Commands.run(() -> intake.setPower(power.getAsDouble()), intake);
+        return Commands.runOnce(() -> intake.setPower(power.getAsDouble()), intake);
     }
 
     public static Command setPower(Intake intake, double power) {
