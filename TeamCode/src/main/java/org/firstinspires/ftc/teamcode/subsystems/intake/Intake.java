@@ -16,10 +16,10 @@ public class Intake extends SubsystemBase {
 
     private final MotorEx intake;
 
-    public Intake(HardwareMap hwMap, Telemetry telemetry, String name) {
+    public Intake(HardwareMap hwMap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
-        intake = new MotorEx(hwMap, name);
+        intake = new MotorEx(hwMap, "intake");
     }
 
     @Override
