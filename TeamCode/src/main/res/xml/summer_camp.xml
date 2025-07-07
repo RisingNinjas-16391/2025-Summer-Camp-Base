@@ -18,7 +18,8 @@
         <LynxModule name="Expansion Hub 1" port="1">
 
             <goBILDA5202SeriesMotor name="FR" port="1"/>
-            <goBILDA5202SeriesMotor name="BR" port="0"/>
+            <goBILDA5202SeriesMotor name="FL" port="0"/>
+
 <!--            <goBILDA5202SeriesMotor name="shooter" port="2"/>&ndash;&gt;-->
 
 

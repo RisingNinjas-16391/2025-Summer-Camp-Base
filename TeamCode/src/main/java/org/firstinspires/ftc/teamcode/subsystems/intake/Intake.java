@@ -32,7 +32,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void setPower(double power) {
-        intake.set(power);
+        intake.set(power * IntakeConstants.POWER_MULTIPLIER);
     }
 
     public static Command setPower(Intake intake, DoubleSupplier power) {
