@@ -13,10 +13,11 @@ public class PivotConstants {
 
     public static double initialPosition = 0;
 
-    public static double FEED = 0.035;
-    public static double CONE = -0.775;
-    public static double HIGH = 0.3;
-    public static double HIGH2 = -0.71;
+    public static double FEED = 0.04;
+    public static double CONE = 0.13;
+    public static double HIGH = 0.34;
+    public static double HIGH2 = 0.3;
+    public static double SCORE = 0.04;
 
     public static double currentThreshold = 2;
     public static double resetVoltage = 10;

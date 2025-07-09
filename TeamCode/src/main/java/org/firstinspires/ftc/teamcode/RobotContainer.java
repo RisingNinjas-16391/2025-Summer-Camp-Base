@@ -15,6 +15,8 @@ import org.firstinspires.ftc.teamcode.subsystems.drive.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.Pivot;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.PivotConstants;
+import org.firstinspires.ftc.teamcode.subsystems.claw.Claw;
+import org.firstinspires.ftc.teamcode.subsystems.claw.ClawConstants;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -23,7 +25,7 @@ public class RobotContainer {
     private final Drive drive;
     private final Pivot pivot;
     private final Intake intake;
-//    private final Claw claw;
+    private final Claw claw;
 
     private final Subsystems subsystems;
 
@@ -33,9 +35,9 @@ public class RobotContainer {
         drive = new Drive(hwMap, telemetry);
         pivot = new Pivot(hwMap, telemetry);
         intake = new Intake(hwMap,telemetry, "FeedMotor");
-//        claw = new Claw(hwMap, telemetry);
+        claw = new Claw(hwMap, telemetry);
 
-        subsystems = new Subsystems(drive, pivot, intake);
+        subsystems = new Subsystems(drive, pivot, intake, claw);
 
         driverController = new CommandGamepad(gamepad1);
 
@@ -63,15 +65,15 @@ public class RobotContainer {
 
     public void configureButtonBindings() {
         driverController.a().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.FEED));
-        driverController.dpadDown().onTrue(Intake.setPower(intake,0));
         driverController.b().onTrue(Pivot.setPosition(pivot,()->PivotConstants.CONE));
         driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH));
         driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH2));
+        driverController.dpadDown().onTrue(Pivot.setPosition(pivot, ()-> PivotConstants.SCORE).alongWith(Claw.setPosition(claw, ()-> ClawConstants.CLOSE)));
 //
 //        driverController.rightBumper().onTrue(Pivot.score(pivot).andThen(Claw.setPosition(claw, () -> ClawConstants.OPEN)));
 //
-        driverController.leftTrigger().whileTrue(Intake.setPower(intake,-1)).onFalse(Intake.setPower(intake,.35));
-        driverController.rightTrigger().whileTrue(Intake.setPower(intake,1)).onFalse(Intake.setPower(intake,.35));
+        driverController.leftTrigger().onTrue(Claw.setPosition(claw, () -> ClawConstants.CLOSE));
+        driverController.rightTrigger().onTrue(Claw.setPosition(claw, () -> ClawConstants.OPEN));
 //
         driverController.start().onTrue(Pivot.resetPosition(pivot));
     }
