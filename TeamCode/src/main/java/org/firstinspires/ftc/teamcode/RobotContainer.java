@@ -73,6 +73,8 @@ public class RobotContainer {
 //
         driverController.leftTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.OUTTAKE_POWER));
         driverController.rightTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.INTAKE_POWER));
+
+        driverController.back().onTrue(DriveCommands.setPose(drive, Pose::new));
     }
 
     public Command getAutoCommand(OpModeConstants auto) {

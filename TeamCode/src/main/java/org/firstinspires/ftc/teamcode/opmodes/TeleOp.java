@@ -6,6 +6,7 @@ import com.qualcomm.hardware.lynx.LynxModule;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.RobotContainer;
+import org.firstinspires.ftc.teamcode.commands.auto.PoseStorage;
 import org.firstinspires.ftc.teamcode.lib.ftclib.opmode.CommandOpMode;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TeleOp", group = "TeleOp")
 public class TeleOp extends CommandOpMode {
     private Telemetry robotTelemetry;
+    private RobotContainer robotContainer;
     private Timer timer = new Timer();
 
     private double previousTime;
@@ -25,7 +27,7 @@ public class TeleOp extends CommandOpMode {
     @Override
     public void robotInit() {
         robotTelemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        new RobotContainer(hardwareMap, robotTelemetry, gamepad1, gamepad2, OpModeConstants.TELEOP); //Uses heavily modified untested hardware
+        robotContainer = new RobotContainer(hardwareMap, robotTelemetry, gamepad1, gamepad2, OpModeConstants.TELEOP); //Uses heavily modified untested hardware
         timer.start();
 
         allHubs = hardwareMap.getAll(LynxModule.class);
@@ -46,5 +48,12 @@ public class TeleOp extends CommandOpMode {
         for (LynxModule module : allHubs) {
             module.clearBulkCache();
         }
+    }
+
+    @Override
+    public void disabledInit() {
+        CommandScheduler.getInstance().reset();
+
+        PoseStorage.currentPose = robotContainer.getDrivePose();
     }
 }
