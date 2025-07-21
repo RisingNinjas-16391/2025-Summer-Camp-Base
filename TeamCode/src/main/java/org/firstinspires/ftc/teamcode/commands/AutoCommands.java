@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.localization.Pose;
 
 import org.firstinspires.ftc.teamcode.subsystems.Subsystems;
+import org.firstinspires.ftc.teamcode.subsystems.claw.Claw;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.Pivot;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.PivotConstants;
@@ -51,13 +52,90 @@ public class AutoCommands {
     */
     public static Command blueAuto(Subsystems subsystems) {
         return Commands.sequence(
-                DriveCommands.forward(subsystems.drive(), 10)
-        );
+                Claw.close(subsystems.claw()).withTimeout(1.0),
+                //close at begging
+                DriveCommands.forward(subsystems.drive(), 15),
+                DriveCommands.strafeRight(subsystems.drive(), 15),
+                Pivot.setPosition(subsystems.pivot(), PivotConstants.LOWBARHIGH).withTimeout(0.0),
+                DriveCommands.forward(subsystems.drive(), 25),
+                DriveCommands.turn(subsystems.drive(), 90).withTimeout(2.0),
+                DriveCommands.forward(subsystems.drive(), 5),
+                Pivot.setPosition(subsystems.pivot(), PivotConstants.FEED).withTimeout(0.0),
+                Pivot.setPosition(subsystems.pivot(), PivotConstants.DOWN).withTimeout(0.0),
+                Claw.open(subsystems.claw()).withTimeout(1.0),
+                DriveCommands.backward(subsystems.drive(), 15),
+                DriveCommands.turn(subsystems.drive(), -270).withTimeout(1.5),
+                //go to second
+                DriveCommands.strafeLeft(subsystems.drive(), 5),
+                DriveCommands.forward(subsystems.drive(), 30),
+                Claw.close(subsystems.claw()).withTimeout(1.0),
+                DriveCommands.backward(subsystems.drive(), 24),
+                Pivot.setPosition(subsystems.pivot(), PivotConstants.LOWBARHIGH).withTimeout(0.0),
+                DriveCommands.turn(subsystems.drive(), -90).withTimeout(1.5),
+                DriveCommands.forward(subsystems.drive(), 25),
+                Claw.open(subsystems.claw()).withTimeout(0.0),
+                Pivot.setPosition(subsystems.pivot(), PivotConstants.initialPosition).withTimeout(2.0),
+
+                DriveCommands.backward(subsystems.drive(), 10),
+                DriveCommands.driveToPose(subsystems.drive(),Pose::new)
+
+
+
+
+                );
     }
+
+
+
 
     public static Command redAuto(Subsystems subsystems) {
         return Commands.sequence(
-                DriveCommands.forward(subsystems.drive(), 10)
+                Claw.close(subsystems.claw()).withTimeout(1.0),
+                //close at begging
+                DriveCommands.forward(subsystems.drive(), 15),
+                DriveCommands.strafeLeft(subsystems.drive(), 15),
+                Pivot.setPosition(subsystems.pivot(), PivotConstants.LOWBARHIGH).withTimeout(0.0),
+                DriveCommands.forward(subsystems.drive(), 25),
+                DriveCommands.turn(subsystems.drive(), -90).withTimeout(2.0),
+                DriveCommands.forward(subsystems.drive(), 5),
+                Pivot.setPosition(subsystems.pivot(), PivotConstants.FEED).withTimeout(0.0),
+                Pivot.setPosition(subsystems.pivot(), PivotConstants.DOWN).withTimeout(0.0),
+                Claw.open(subsystems.claw()).withTimeout(1.0),
+                DriveCommands.backward(subsystems.drive(), 15),
+                DriveCommands.turn(subsystems.drive(), 270).withTimeout(1.5),
+                //go to second
+                DriveCommands.strafeRight(subsystems.drive(), 6),
+                DriveCommands.forward(subsystems.drive(), 35),
+                Claw.close(subsystems.claw()).withTimeout(1.0),
+                DriveCommands.backward(subsystems.drive(), 25),
+                Pivot.setPosition(subsystems.pivot(), PivotConstants.LOWBARHIGH).withTimeout(0.0),
+                DriveCommands.turn(subsystems.drive(), 90).withTimeout(1.5),
+                DriveCommands.forward(subsystems.drive(), 25),
+                Claw.open(subsystems.claw()).withTimeout(0.0),
+                Pivot.setPosition(subsystems.pivot(), PivotConstants.initialPosition).withTimeout(2.0),
+
+                DriveCommands.backward(subsystems.drive(), 10),
+                DriveCommands.driveToPose(subsystems.drive(),Pose::new)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                //to do score second
+
+
         );
     }
 }

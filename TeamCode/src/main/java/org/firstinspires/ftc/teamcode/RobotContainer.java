@@ -27,6 +27,7 @@ public class RobotContainer {
     private final Pivot pivot;
     private final Intake intake;
     private final Subsystems subsystems;
+    private final Claw claw;
 
     private final CommandGamepad driverController;
 
@@ -34,8 +35,9 @@ public class RobotContainer {
         drive = new Drive(hwMap, telemetry);
         pivot = new Pivot(hwMap, telemetry);
         intake = new Intake(hwMap, telemetry);
+        claw = new Claw(hwMap, telemetry);
 
-        subsystems = new Subsystems(drive, pivot, intake);
+        subsystems = new Subsystems(drive, pivot, intake, claw);
 
         driverController = new CommandGamepad(gamepad1);
 
@@ -67,12 +69,17 @@ public class RobotContainer {
         driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH));
         driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.CLIMB));
 
+        driverController.dpadUp().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.BAR));
+        driverController.dpadDown().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.DOWN));
+        driverController.dpadLeft().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.LOWBARHIGH));
+
+
         driverController.start().onTrue(Pivot.resetPosition(pivot));
 
 //        driverController.rightBumper().onTrue(Pivot.score(pivot).andThen(Claw.setPosition(claw, () -> ClawConstants.OPEN)));
-//
-        driverController.leftTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.OUTTAKE_POWER));
-        driverController.rightTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.INTAKE_POWER));
+
+        driverController.leftTrigger().onTrue(Claw.setPosition(claw, () -> ClawConstants.CLOSE));
+        driverController.rightTrigger().onTrue(Claw.setPosition(claw, () -> ClawConstants.OPEN));
     }
 
     public Command getAutoCommand(OpModeConstants auto) {
