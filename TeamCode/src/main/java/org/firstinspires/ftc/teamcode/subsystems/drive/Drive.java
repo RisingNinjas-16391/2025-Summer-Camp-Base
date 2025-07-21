@@ -81,7 +81,7 @@ public class Drive extends SubsystemBase {
     }
 
     public boolean headingIsFinished() {
-        return drive.getHeadingError() < 0.001; // Adjust this threshold as needed
+        return Math.abs(drive.getHeadingError()) < 0.1; // Adjust this threshold as needed
     }
 
     public static Command followPath(Drive drive, Pose startPose, PathChain path) {

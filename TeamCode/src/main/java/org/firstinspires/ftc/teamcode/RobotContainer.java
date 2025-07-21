@@ -62,17 +62,25 @@ public class RobotContainer {
     }
 
     public void configureButtonBindings() {
-        driverController.a().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.FEED));
+        driverController.a().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.FEEDLOW));
+        driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.FEEDHIGH));
         driverController.b().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.LOW));
         driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH));
-        driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.CLIMB));
+        driverController.dpadUp().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.CLIMB));
 
+        driverController.rightBumper().or(driverController.dpadDown()).onTrue(
+                Commands.sequence(
+                            Pivot.score(pivot).alongWith(Intake.setPower(intake, () -> IntakeConstants.INTAKE_POWER).withTimeout(0.2)),
+                            Commands.waitSeconds(0.25),
+                            Intake.setPower(intake, () -> IntakeConstants.OUTTAKE_POWER)
+                        )
+        ).onFalse(Intake.setPower(intake, () -> 0.0));
         driverController.start().onTrue(Pivot.resetPosition(pivot));
 
 //        driverController.rightBumper().onTrue(Pivot.score(pivot).andThen(Claw.setPosition(claw, () -> ClawConstants.OPEN)));
 //
-        driverController.leftTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.OUTTAKE_POWER));
-        driverController.rightTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.INTAKE_POWER));
+        driverController.leftTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.OUTTAKE_POWER)).onFalse(Intake.setPower(intake, 0.0));
+        driverController.rightTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.INTAKE_POWER)).onFalse(Intake.setPower(intake, 0.0));
     }
 
     public Command getAutoCommand(OpModeConstants auto) {
