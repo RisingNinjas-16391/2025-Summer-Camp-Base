@@ -8,8 +8,7 @@
             <goBILDA5202SeriesMotor name="pivot" port="2"/>-->
 
 
-            <ContinuousRotationServo name="leftIntake" port="0"/>
-            <ContinuousRotationServo name="rightIntake" port="1"/>
+            <ContinuousRotationServo name="rightClimb" port="0"/>
 
             <goBILDAPinpoint name="pinpoint" port="0" bus="0"/>
 
@@ -18,6 +17,9 @@
 
             <goBILDA5202SeriesMotor name="FL" port="1"/>
             <goBILDA5202SeriesMotor name="BL" port="0"/>
+
+            <ContinuousRotationServo name="leftClimb" port="0"/>
+
 
         </LynxModule>
     </LynxUsbDevice>

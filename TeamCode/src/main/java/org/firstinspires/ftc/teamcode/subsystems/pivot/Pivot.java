@@ -106,8 +106,8 @@ public class Pivot extends SubsystemBase {
         return setPosition(pivot, () -> position);
     }
 
-    public static Command score(Pivot pivot) {
-        return Commands.runOnce(() -> pivot.setPosition(pivot.getPosition() - 0.1)).andThen(Commands.waitUntil(pivot::isFinished));
+    public static Command score(Pivot pivot, double amount) {
+        return Commands.runOnce(() -> pivot.setPosition(pivot.getPosition() - amount)).andThen(Commands.waitUntil(pivot::isFinished));
     }
 
     private void setVoltage(double voltage) {
