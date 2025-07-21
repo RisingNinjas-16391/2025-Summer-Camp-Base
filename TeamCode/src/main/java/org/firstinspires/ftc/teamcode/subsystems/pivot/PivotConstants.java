@@ -14,9 +14,10 @@ public class PivotConstants {
     public static double initialPosition = -0.12;
 
     public static double FEED = -0.12;
-    public static double LOW = 0.15;
     public static double HIGH = 0.2;
-    public static double CLIMB = 0.5;
+    public static double CLIMB = 0.41;
+    public static double HIGHBAR = 0.1176;
+    public static double LOWBAR = 0.0725;
 
     public static double currentThreshold = 2;
     public static double resetVoltage = -10;

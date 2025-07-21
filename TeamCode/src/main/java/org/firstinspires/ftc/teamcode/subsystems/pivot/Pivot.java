@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.lib.controller.SquIDController;
 import org.firstinspires.ftc.teamcode.lib.ftclib.hardware.motors.MotorEx;
+import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeConstants;
 
 import java.nio.channels.Pipe;
 import java.util.function.DoubleSupplier;
@@ -123,5 +125,18 @@ public class Pivot extends SubsystemBase {
                     pivot.setVoltage(0.0)),
                 Commands.waitSeconds(0.5),
                 Commands.runOnce(pivot::resetMotor));
+    }
+
+    public static Command goDown(Pivot pivot, Intake intake) {
+        return Commands.sequence(
+                Intake.setPower(intake, () -> IntakeConstants.INTAKE_POWER).withTimeout(0.25),
+                Pivot.setPosition(pivot, () -> PivotConstants.LOWBAR),
+                Commands.waitSeconds(0.25),
+                Pivot.setPosition(pivot, () -> 0.0274),
+                Intake.setPower(intake, () -> IntakeConstants.OUTTAKE_POWER).withTimeout(0.25),
+                Commands.waitSeconds(0.25),
+                Pivot.setPosition(pivot, () -> PivotConstants.FEED),
+                Intake.setPower(intake, () -> 0).withTimeout(0.25)
+        );
     }
 }

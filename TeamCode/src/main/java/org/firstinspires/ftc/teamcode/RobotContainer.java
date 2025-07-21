@@ -11,8 +11,6 @@ import org.firstinspires.ftc.teamcode.commands.auto.PoseStorage;
 import org.firstinspires.ftc.teamcode.lib.wpilib.CommandGamepad;
 import org.firstinspires.ftc.teamcode.opmodes.OpModeConstants;
 import org.firstinspires.ftc.teamcode.subsystems.Subsystems;
-import org.firstinspires.ftc.teamcode.subsystems.claw.Claw;
-import org.firstinspires.ftc.teamcode.subsystems.claw.ClawConstants;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeConstants;
@@ -62,17 +60,24 @@ public class RobotContainer {
     }
 
     public void configureButtonBindings() {
-        driverController.a().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.FEED));
-        driverController.b().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.LOW));
-        driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH));
-        driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.CLIMB));
+        driverController.a().onTrue(
+            Commands.sequence(
+                Pivot.setPosition(pivot, () -> PivotConstants.HIGHBAR),
+                Commands.waitSeconds(0.25),
+                Pivot.setPosition(pivot, () -> PivotConstants.LOWBAR)
+            )
+        );
 
+        driverController.a().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGHBAR));
+        driverController.b().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.LOWBAR));
+        driverController.y().onTrue(Pivot.setPosition(pivot, () -> -0.05));
+        driverController.x().onTrue(Pivot.goDown(pivot, intake));
         driverController.start().onTrue(Pivot.resetPosition(pivot));
+        driverController.dpadUp().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.CLIMB));
+        driverController.dpadDown().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.FEED));
 
-//        driverController.rightBumper().onTrue(Pivot.score(pivot).andThen(Claw.setPosition(claw, () -> ClawConstants.OPEN)));
-//
-        driverController.leftTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.OUTTAKE_POWER));
-        driverController.rightTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.INTAKE_POWER));
+        driverController.leftTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.OUTTAKE_POWER)).onFalse(Intake.setPower(intake, () -> 0));
+        driverController.rightTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.INTAKE_POWER)).onFalse(Intake.setPower(intake, () -> 0));
     }
 
     public Command getAutoCommand(OpModeConstants auto) {
