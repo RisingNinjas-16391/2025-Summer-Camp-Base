@@ -7,7 +7,8 @@ import org.firstinspires.ftc.teamcode.subsystems.Subsystems;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.Pivot;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.PivotConstants;
-
+import org.firstinspires.ftc.teamcode.subsystems.claw.Claw;
+import org.firstinspires.ftc.teamcode.subsystems.claw.ClawConstants;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
@@ -51,13 +52,45 @@ public class AutoCommands {
     */
     public static Command blueAuto(Subsystems subsystems) {
         return Commands.sequence(
-                DriveCommands.forward(subsystems.drive(), 10)
+                DriveCommands.strafeRight(subsystems.drive(), 13.5),
+                DriveCommands.forward(subsystems.drive(), 34),
+                DriveCommands.turn(subsystems.drive(), 90).alongWith(Pivot.setPosition(subsystems.pivot(), () -> PivotConstants.LOW)),
+                DriveCommands.forward(subsystems.drive(), 8),
+                Claw.open(subsystems.claw()).withTimeout(.8),
+                DriveCommands.backward(subsystems.drive(), 23),
+                DriveCommands.turn(subsystems.drive(), 90).alongWith(Pivot.setPosition(subsystems.pivot(), () -> PivotConstants.FEED)),
+                DriveCommands.forward(subsystems.drive(), 25),
+                Claw.close(subsystems.claw()).withTimeout(.5),
+                DriveCommands.backward(subsystems.drive(), 34),
+                DriveCommands.turn(subsystems.drive(), -90).alongWith(Pivot.setPosition(subsystems.pivot(), () -> PivotConstants.LOW)),
+                DriveCommands.forward(subsystems.drive(), 27),
+                Claw.open(subsystems.claw()).withTimeout(.8),
+                DriveCommands.backward(subsystems.drive(), 11).alongWith(Pivot.setPosition(subsystems.pivot(), () -> PivotConstants.FEED)),
+                DriveCommands.driveToPose(subsystems.drive(), Pose::new)
         );
     }
 
     public static Command redAuto(Subsystems subsystems) {
         return Commands.sequence(
-                DriveCommands.forward(subsystems.drive(), 10)
-        );
+                DriveCommands.strafeLeft(subsystems.drive(), 13.5).alongWith(Claw.close(subsystems.claw()).withTimeout(.6)),
+                DriveCommands.forward(subsystems.drive(), 29),
+                DriveCommands.turn(subsystems.drive(), -90).alongWith(Pivot.setPosition(subsystems.pivot(), () -> PivotConstants.LOW)),
+                Commands.waitSeconds(.5),
+                DriveCommands.forward(subsystems.drive(), 9).withTimeout(1),
+                Claw.open(subsystems.claw()).withTimeout(.6),
+                Pivot.setPosition(subsystems.pivot(), () -> PivotConstants.FEED),
+                DriveCommands.backward(subsystems.drive(), 27).andThen(Commands.waitSeconds(.4)).andThen(DriveCommands.turn(subsystems.drive(), -90)),
+                DriveCommands.forward(subsystems.drive(), 20),
+                Commands.waitSeconds(1),
+                DriveCommands.forward(subsystems.drive(), 5),
+                Claw.close(subsystems.claw()).withTimeout(.5),
+                DriveCommands.backward(subsystems.drive(), 28),
+                Commands.waitSeconds(.5),
+                DriveCommands.turn(subsystems.drive(), 90).alongWith(Pivot.setPosition(subsystems.pivot(), () -> PivotConstants.LOW)),
+                DriveCommands.forward(subsystems.drive(), 28),
+                Claw.open(subsystems.claw()).withTimeout(.8),
+                DriveCommands.backward(subsystems.drive(), 10).alongWith((Pivot.setPosition(subsystems.pivot(), () -> PivotConstants.FEED))),
+                DriveCommands.driveToPose(subsystems.drive(), Pose::new)
+                );
     }
 }
