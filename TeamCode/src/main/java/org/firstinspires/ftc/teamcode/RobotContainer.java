@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 public class RobotContainer {
     private final Drive drive;
     private final Pivot pivot;
-    private final Intake intake;
+    private final Claw claw;
     private final Subsystems subsystems;
 
     private final CommandGamepad driverController;
@@ -33,9 +33,9 @@ public class RobotContainer {
     public RobotContainer(HardwareMap hwMap, Telemetry telemetry, Gamepad gamepad1, Gamepad gamepad2, OpModeConstants autoNum) {
         drive = new Drive(hwMap, telemetry);
         pivot = new Pivot(hwMap, telemetry);
-        intake = new Intake(hwMap, telemetry);
+        claw = new Claw(hwMap, telemetry);
 
-        subsystems = new Subsystems(drive, pivot, intake);
+        subsystems = new Subsystems(drive, pivot, claw);
 
         driverController = new CommandGamepad(gamepad1);
 
@@ -66,13 +66,17 @@ public class RobotContainer {
         driverController.b().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.LOW));
         driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH));
         driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.CLIMB));
+        driverController.dpadDown().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH_FEED));
 
         driverController.start().onTrue(Pivot.resetPosition(pivot));
 
 //        driverController.rightBumper().onTrue(Pivot.score(pivot).andThen(Claw.setPosition(claw, () -> ClawConstants.OPEN)));
 //
-        driverController.leftTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.OUTTAKE_POWER));
-        driverController.rightTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.INTAKE_POWER));
+        //driverController.leftTrigger().onTrue(Claw.open(claw));
+        //driverController.rightTrigger().onTrue(Claw.close(claw));
+        driverController.leftTrigger().onTrue(Claw.close(claw));
+        driverController.rightTrigger().onTrue(Claw.open(claw));
+
     }
 
     public Command getAutoCommand(OpModeConstants auto) {
