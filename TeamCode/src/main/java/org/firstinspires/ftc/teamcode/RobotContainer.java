@@ -18,6 +18,8 @@ import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeConstants;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.Pivot;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.PivotConstants;
+import org.firstinspires.ftc.teamcode.subsystems.shooter.Shooter;
+import org.firstinspires.ftc.teamcode.subsystems.shooter.ShooterConstants;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -26,6 +28,7 @@ public class RobotContainer {
     private final Drive drive;
     private final Pivot pivot;
     private final Intake intake;
+    private final Shooter shooter;
     private final Subsystems subsystems;
 
     private final CommandGamepad driverController;
@@ -34,8 +37,9 @@ public class RobotContainer {
         drive = new Drive(hwMap, telemetry);
         pivot = new Pivot(hwMap, telemetry);
         intake = new Intake(hwMap, telemetry);
+        shooter = new Shooter(hwMap, telemetry);
 
-        subsystems = new Subsystems(drive, pivot, intake);
+        subsystems = new Subsystems(drive, pivot, intake, shooter);
 
         driverController = new CommandGamepad(gamepad1);
 
@@ -62,16 +66,12 @@ public class RobotContainer {
     }
 
     public void configureButtonBindings() {
-        driverController.a().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.FEED));
-        driverController.b().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.LOW));
-        driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH));
-        driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.CLIMB));
+        driverController.a().onTrue(Shooter.setPower(shooter, () -> ShooterConstants.SHOOTER_POWER));
+        driverController.x().onTrue(Shooter.setPower(shooter, () -> 0.0));
 
         driverController.start().onTrue(Pivot.resetPosition(pivot));
-
-//        driverController.rightBumper().onTrue(Pivot.score(pivot).andThen(Claw.setPosition(claw, () -> ClawConstants.OPEN)));
-//
-        driverController.leftTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.OUTTAKE_POWER));
+        
+        driverController.b().onTrue(Intake.setPower(intake, () -> IntakeConstants.OUTTAKE_POWER));
         driverController.rightTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.INTAKE_POWER));
 
         driverController.back().onTrue(DriveCommands.setPose(drive, Pose::new));
