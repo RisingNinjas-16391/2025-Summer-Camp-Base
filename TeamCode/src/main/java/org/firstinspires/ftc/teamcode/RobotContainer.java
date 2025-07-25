@@ -66,12 +66,13 @@ public class RobotContainer {
     }
 
     public void configureButtonBindings() {
-        driverController.a().onTrue(Shooter.setPower(shooter, () -> ShooterConstants.SHOOTER_POWER));
-        driverController.x().onTrue(Shooter.setPower(shooter, () -> 0.0));
-
-        driverController.start().onTrue(Pivot.resetPosition(pivot));
-        
-        driverController.b().onTrue(Intake.setPower(intake, () -> IntakeConstants.OUTTAKE_POWER));
+        driverController.a().whileTrue(Pivot.setPosition(pivot, () -> PivotConstants.FEED));
+        driverController.b().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.LOW));
+        driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH));
+        driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.CLIMB));
+//        driverController.rightBumper().onTrue(Pivot.score(pivot).andThen(Claw.setPosition(claw, () -> ClawConstants.OPEN)));
+//
+        driverController.leftTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.OUTTAKE_POWER));
         driverController.rightTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.INTAKE_POWER));
 
         driverController.back().onTrue(DriveCommands.setPose(drive, Pose::new));

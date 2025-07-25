@@ -25,6 +25,9 @@ public class AutoCommands {
     (Replace angle with a number):
     DriveCommands.turn(subsystems.drive(), angle),
 
+    DriveCommands.driveToPose(subsystems.drive(), () -> new Pose(x, y, Math.toRadians(rotate))),
+
+
     Pivot (Replace PRESET with a valid Pivot preset):
     Pivot.setPosition(subsystems.pivot(), PivotConstants.PRESET),
     Pivot.setPosition(subsystems.pivot(), () -> PivotConstants.PRESET),
@@ -49,9 +52,20 @@ public class AutoCommands {
     Wrist.setPosition(subsystems.wrist(), () -> WristPresets.PRESET),
 
     */
+    public static double X =62;
+    public static double Y =-35;
+    public static double X2 =78;
+    public static double Y2 =-0;
     public static Command blueAuto(Subsystems subsystems) {
         return Commands.sequence(
-                DriveCommands.forward(subsystems.drive(), 10)
+                DriveCommands.strafeRight(subsystems.drive(), 10),
+                DriveCommands.driveToPose(subsystems.drive(), () -> new Pose(X, Y, Math.toRadians(135))),
+                Commands.waitSeconds(0.5),
+                DriveCommands.driveToPose(subsystems.drive(), () -> new Pose(X2, Y2, Math.toRadians(45))),
+                Commands.waitSeconds(0.5),
+                DriveCommands.driveToPose(subsystems.drive(), () -> new Pose(X, Y, Math.toRadians(135))),
+                Commands.waitSeconds(0.5),
+                DriveCommands.driveToPose(subsystems.drive(), () -> new Pose(0, 0, Math.toRadians(0)))
         );
     }
 
