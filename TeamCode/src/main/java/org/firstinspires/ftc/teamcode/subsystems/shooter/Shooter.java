@@ -39,6 +39,10 @@ public class Shooter extends SubsystemBase {
         return Commands.run(() -> shooter.setPower(power.getAsDouble()), shooter);
     }
 
+    public static Command setPowerTelop(Shooter shooter, DoubleSupplier power) {
+        return Commands.run(() -> shooter.setPower(power.getAsDouble()), shooter).finallyDo(() -> shooter.setPower(0));
+    }
+
     public static Command setPower(Shooter shooter, double power) {
         return setPower(shooter, () -> power);
     }

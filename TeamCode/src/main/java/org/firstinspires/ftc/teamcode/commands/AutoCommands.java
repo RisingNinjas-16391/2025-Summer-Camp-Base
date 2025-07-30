@@ -5,11 +5,15 @@ import com.pedropathing.localization.Pose;
 
 import org.firstinspires.ftc.teamcode.subsystems.Subsystems;
 import org.firstinspires.ftc.teamcode.subsystems.drive.Drive;
+import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.Pivot;
 import org.firstinspires.ftc.teamcode.subsystems.pivot.PivotConstants;
+import org.firstinspires.ftc.teamcode.subsystems.shooter.Shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+
+
 
 @Config
 public class AutoCommands {
@@ -49,15 +53,60 @@ public class AutoCommands {
     Wrist.setPosition(subsystems.wrist(), () -> WristPresets.PRESET),
 
     */
+    public static double Y = -37.5;
+    public static double X = 58;
+    public static double X2 = 65;
+    public static double Y2 = -9;
+    public static double S = 0.75;
+
+    public static double s = 0.7;
+    public static double redhoop = 222;
+    public static double redball = -45;
+
     public static Command blueAuto(Subsystems subsystems) {
         return Commands.sequence(
-                DriveCommands.forward(subsystems.drive(), 10)
+                DriveCommands.driveToPose(subsystems.drive(), () -> new Pose(X, Y, Math.toRadians(140))),
+                Shooter.setPower(subsystems.shooter(), () -> S).withTimeout(1.5),
+                Intake.setPower(subsystems.intake(), () -> 0.5).withTimeout(1),
+                Shooter.setPower(subsystems.shooter(), () -> 0).withTimeout(0),
+                DriveCommands.driveToPose(subsystems.drive(), () -> new Pose(X2, Y2, Math.toRadians(35))),
+                Intake.setPower(subsystems.intake(), () -> 0).withTimeout(1),
+                Shooter.setPower(subsystems.shooter(), () -> -0.25).withTimeout(0),
+                Intake.setPower(subsystems.intake(), () -> -0.25).withTimeout(0.5),
+                Shooter.setPower(subsystems.shooter(), () -> 0).withTimeout(0),
+                Intake.setPower(subsystems.intake(), () -> 0).withTimeout(0),
+                DriveCommands.driveToPose(subsystems.drive(), () -> new Pose(X, Y, Math.toRadians(140))),
+                Shooter.setPower(subsystems.shooter(), () -> S).withTimeout(1.5),
+                Intake.setPower(subsystems.intake(), () -> 0.25).withTimeout(1),
+                Intake.setPower(subsystems.intake(), () -> 0).withTimeout(0),
+                Shooter.setPower(subsystems.shooter(), () -> 0).withTimeout(0),
+                DriveCommands.driveToPose(subsystems.drive(), () -> new Pose(0, 0, Math.toRadians(0)))
+
         );
     }
 
     public static Command redAuto(Subsystems subsystems) {
         return Commands.sequence(
-                DriveCommands.forward(subsystems.drive(), 10)
+
+                DriveCommands.driveToPose(subsystems.drive(), () -> new Pose(X, 40, Math.toRadians(redhoop))),
+                Shooter.setPower(subsystems.shooter(), () -> s).withTimeout(1.5),
+                Intake.setPower(subsystems.intake(), () -> 0.5).withTimeout(1),
+                Shooter.setPower(subsystems.shooter(), () -> 0).withTimeout(0),
+                DriveCommands.driveToPose(subsystems.drive(), () -> new Pose(X2, -Y2, Math.toRadians(redball))),
+                Commands.waitSeconds(1),
+                Intake.setPower(subsystems.intake(), () -> 0).withTimeout(1),
+                Shooter.setPower(subsystems.shooter(), () -> -0.25).withTimeout(0),
+                Intake.setPower(subsystems.intake(), () -> -0.25).withTimeout(0.5),
+                Shooter.setPower(subsystems.shooter(), () -> 0).withTimeout(0),
+                Intake.setPower(subsystems.intake(), () -> 0).withTimeout(0),
+                DriveCommands.driveToPose(subsystems.drive(), () -> new Pose(X, -Y, Math.toRadians(redhoop))),
+                Shooter.setPower(subsystems.shooter(), () -> S).withTimeout(1.5),
+                Intake.setPower(subsystems.intake(), () -> 0.25).withTimeout(1),
+                Intake.setPower(subsystems.intake(), () -> 0).withTimeout(0),
+                Shooter.setPower(subsystems.shooter(), () -> 0).withTimeout(0),
+                DriveCommands.driveToPose(subsystems.drive(), () -> new Pose(0, 0, Math.toRadians(0)))
+
+
         );
     }
 }
