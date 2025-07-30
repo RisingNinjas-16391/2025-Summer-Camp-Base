@@ -87,7 +87,7 @@ public class RobotContainer {
 
         driverController.leftTrigger().onTrue(
                 Commands.sequence(
-                        Shooter.setPower(shooter, () -> ShooterConstants.SHOOTER_POWER).withTimeout(2.0),
+                        Shooter.setPower(shooter, () -> ShooterConstants.SHOOTER_POWER).withTimeout(1.5),
                         Intake.setPower(intake, () -> IntakeConstants.INTAKE_POWER).withTimeout(3.0)
                 )
         ).onFalse(
