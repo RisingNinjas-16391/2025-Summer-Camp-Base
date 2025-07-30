@@ -70,11 +70,9 @@ public class RobotContainer {
         driverController.b().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.LOW));
         driverController.y().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.HIGH));
         driverController.x().onTrue(Pivot.setPosition(pivot, () -> PivotConstants.CLIMB));
-//        driverController.rightBumper().onTrue(Pivot.score(pivot).andThen(Claw.setPosition(claw, () -> ClawConstants.OPEN)));
-//
-        driverController.leftTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.OUTTAKE_POWER));
-        driverController.rightTrigger().onTrue(Intake.setPower(intake, () -> IntakeConstants.INTAKE_POWER));
-
+        driverController.rightTrigger().whileTrue(Shooter.setPower(shooter, () -> ShooterConstants.SHOOTER_POWER));
+        driverController.leftTrigger().whileTrue(Intake.setPower(intake, () -> IntakeConstants.OUTTAKE_POWER));
+        driverController.rightTrigger().whileTrue(Intake.setPower(intake, () -> IntakeConstants.INTAKE_POWER));
         driverController.back().onTrue(DriveCommands.setPose(drive, Pose::new));
     }
 
